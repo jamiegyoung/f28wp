@@ -6,12 +6,10 @@ const StartButton = () => {
   const history = useHistory();
   const [hasStarted, setHasStarted] = useState(false);
   const [pseudoHidden, setPseudoHidden] = useState(false);
-  const [buttonIsHidden, setButtonIsHidden] = useState(false);
   
   useEffect(() => {
     if (hasStarted) {
       setTimeout(() => {
-        setButtonIsHidden(true)
         history.push('/game');
       }, 200);
       return setPseudoHidden(true);
@@ -19,9 +17,7 @@ const StartButton = () => {
     setPseudoHidden(false)
   }, [hasStarted, history])
 
-  return <div style={{
-       display: (buttonIsHidden) ? 'none' : 'flex'
-    }}
+  return <div
     className={`start-button ${pseudoHidden ? 'hidden' : ''}`}
     onClick={() => setHasStarted(true)}
   >
