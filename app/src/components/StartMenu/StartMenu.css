@@ -1,0 +1,19 @@
+.start-container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  transition: all .2s ease-out;
+}
+
+.start-container p, .start-container h1{
+  width: 75vw;
+  max-width: 500px;
+  color: white;
+  text-align: center;
+}
+
+.start-container p {
+  font-size: 1.3em;
+}

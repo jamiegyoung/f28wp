@@ -1,21 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import './StartButton.css'
+import { Route, Link, useHistory } from 'react-router-dom';
 
-const StartButton = ({ updateState }) => {
+const StartButton = () => {
+  const history = useHistory();
   const [hasStarted, setHasStarted] = useState(false);
   const [pseudoHidden, setPseudoHidden] = useState(false);
   const [buttonIsHidden, setButtonIsHidden] = useState(false);
   
   useEffect(() => {
-    updateState(hasStarted)
     if (hasStarted) {
       setTimeout(() => {
         setButtonIsHidden(true)
+        history.push('/game');
       }, 200);
       return setPseudoHidden(true);
     }
     setPseudoHidden(false)
-  }, [hasStarted, updateState])
+  }, [hasStarted, history])
 
   return <div style={{
        display: (buttonIsHidden) ? 'none' : 'flex'
