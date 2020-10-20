@@ -20,8 +20,8 @@ const StartMenu = () => {
 
   return <div className={`start-container ${pseudoHidden ? 'hidden' : ''}`}>
     {/* temporary game description */}
-    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus vestibulum purus eu urna dapibus, vel scelerisque enim lacinia. Nulla facilisi. Phasellus vitae sollicitudin orci, eu molestie ante. Praesent ultrices egestas suscipit. Quisque lacinia at quam vel egestas. Sed sed fringilla orci, eget ullamcorper quam. Fusce ac urna et magna porttitor scelerisque. Nam at placerat diam. Nam non ligula quis quam mollis placerat a vel felis. Vestibulum in sem in nibh consectetur venenatis id quis dui.</p>
-    <h1>Have fun!</h1>
+    <h1>Welcome to Type Titans</h1>
+    <p>rules of the game are  you are given a sentence every 5 seconds, type these sentences as fast as possible to deal damage to the boss, if every word in the sentence is typed out correctly you hit the opposing enemy with a critical strike. Good luck and may the titans be in yout favour.</p>
     <StartButton></StartButton>
   </div>
 }
