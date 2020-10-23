@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "set PORT=http://localhost:3001 && node index.js",
+    "start": "set PORT=http://localhost:4516 && node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
