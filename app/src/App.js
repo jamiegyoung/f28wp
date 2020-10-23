@@ -12,7 +12,9 @@ function App() {
   useEffect(() => {
     const socket = socketIOClient('http://localhost:4516/');
     console.log(socket);
-    // socket.on("")
+    socket.on("test", data => {
+      console.log(data);
+    })
   }, [])
   return (
     // This allows for routing the jsx based off the url
