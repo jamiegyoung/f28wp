@@ -11,7 +11,7 @@ io.on("connection", (socket) => {
     console.log("User connected");
     const player = new Player('asd', 15000)
     setTimeout(() => {
-        socket.emit("test", { level: player.level })
+        socket.emit("test", { level: player.level, damage: player.damage, health: player.health })
         console.log("data sent to test");
     }, 5000);
     socket.on("disconnect", () => {
