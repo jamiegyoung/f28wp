@@ -18,7 +18,7 @@ class Boss extends Stage {
     }
 
     decrementHealth(){
-        return wordLength * userDamage;
+        
     }
 
     setdamage(){

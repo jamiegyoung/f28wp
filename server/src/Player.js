@@ -20,9 +20,13 @@ class Player {
   }
 
   get damage() {
+    
     return 20 * Math.pow(Math.E, this.level / 105);
   }
   
+  set damage(){
+    return wordLength * userDamage;
+  }
   addExperience(){
 
   }
