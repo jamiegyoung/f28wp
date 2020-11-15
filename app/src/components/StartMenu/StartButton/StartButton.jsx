@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './StartButton.css'
-import { Route, Link, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 
 const StartButton = () => {
   const history = useHistory();
