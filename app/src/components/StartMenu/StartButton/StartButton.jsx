@@ -10,7 +10,7 @@ const StartButton = () => {
   useEffect(() => {
     if (hasStarted) {
       setTimeout(() => {
-        history.push('/game');
+        history.push('/login');
       }, 200);
       return setPseudoHidden(true);
     }

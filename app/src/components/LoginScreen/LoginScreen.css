@@ -1,0 +1,9 @@
+.LoginScreen {
+    background-color: #e73636;
+    height: 100vh;
+    width: 100vw;
+  }
+  .LoginScreen form {
+    margin: 15;
+    max-width: 320px;
+  }
