@@ -23,7 +23,7 @@ class LoginScreen extends React.Component {
         click.preventDefault();
         // IF PASSWORD AND USER MATCH DB, GO TO /GAME ELSE LOG AND ALERT.
         const history = useHistory();
-        history.push('/login'); 
+        history.push('/game'); 
       }
     
       render() { // Rendering a basic barebone form using only react and no libraries only to test for functionality.
