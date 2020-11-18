@@ -11,23 +11,27 @@ class LoginScreen extends React.Component {
 
         username:'',
 
-        password:''
+        password:'',
 
         }
 
       }
       
-      submitEntry(click) {
+      
 
+      submitEntry(click) {
+        
+        const history = useHistory();
         // ** TODO **: ADD SQL integration here.
         click.preventDefault();
         // IF PASSWORD AND USER MATCH DB, GO TO /GAME ELSE LOG AND ALERT.
-        const history = useHistory();
+        
         history.push('/game'); 
       }
     
       render() { // Rendering a basic barebone form using only react and no libraries only to test for functionality.
         return ( // username and password text and input field
+          
           <form>
             
             <label> 
