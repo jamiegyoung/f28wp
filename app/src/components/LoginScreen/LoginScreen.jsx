@@ -17,16 +17,6 @@ const LoginScreen = () => {
     }
   }, [])
 
-  const history = useHistory();
-
-  const submitEntry = (click) => {
-    // ** TODO **: ADD SQL integration here.
-    click.preventDefault();
-    // IF PASSWORD AND USER MATCH DB, GO TO /GAME ELSE LOG AND ALERT.
-
-    history.push("/game");
-  };
-
   // username and password text and input field
   return (
     <div className={`login-container ${pseudoHidden ? 'hidden' : ''}`}>
