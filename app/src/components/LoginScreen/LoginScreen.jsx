@@ -1,59 +1,49 @@
-import React, { useRef, useState, useEffect, setState } from 'react';
-import { useHistory } from 'react-router-dom';
-import './LoginScreen.css'
+import React, { useRef, useState, useEffect, setState } from "react";
+import { useHistory } from "react-router-dom";
+import "./LoginScreen.css";
 
+const LoginScreen = () => {
+  const [pseudoHidden, setPseudoHidden] = useState(true);
+  const isComponentLoaded = useRef(true)
 
-class LoginScreen extends React.Component {
-    constructor(props) {
+  useEffect(() => {
+    setTimeout(() => {
+      if (!isComponentLoaded) return;
+      setPseudoHidden(false);
+    }, 200);
 
-      super();
-      this.state={
-
-        username:'',
-
-        password:'',
-
-        }
-
-      }
-      
-      
-
-      submitEntry(click) {
-        
-        const history = useHistory();
-        // ** TODO **: ADD SQL integration here.
-        click.preventDefault();
-        // IF PASSWORD AND USER MATCH DB, GO TO /GAME ELSE LOG AND ALERT.
-        
-        history.push('/game'); 
-      }
-    
-      render() { // Rendering a basic barebone form using only react and no libraries only to test for functionality.
-        return ( // username and password text and input field
-          
-          <form>
-            
-            <label> 
-
-              Username: 
-              <input type = "text" onChange = { (entry, userInput) => this.setState({username: userInput}) } />
-
-            </label>
-            
-            <label> 
-
-              Password:  
-              <input type = "password" onChange = { (entry, passInput) => this.setState({password: passInput}) } />
-
-            </label>
-
-            <button type = "submit" onClick={ (event) => this.submitEntry(event) } >
-                Login
-            </button>
-          </form>
-
-        );
-      }
+    return () => {
+      isComponentLoaded.current = false;
     }
- export default LoginScreen;
+  }, [])
+
+  const history = useHistory();
+
+  const submitEntry = (click) => {
+    // ** TODO **: ADD SQL integration here.
+    click.preventDefault();
+    // IF PASSWORD AND USER MATCH DB, GO TO /GAME ELSE LOG AND ALERT.
+
+    history.push("/game");
+  };
+
+  return (
+    // username and password text and input field
+    <div className={`login-container ${pseudoHidden ? 'hidden' : ''}`}>
+      <form className="login-form" action="api/authenticate" method="POST">
+        <label>Username:</label>
+        <input type="text" name="username" placeholder="Username" required />
+        <label>Password:</label>
+        <input
+          type="password"
+          name="password"
+          placeholder="Password"
+          required
+        />
+        <button type="submit">Login</button>
+      </form>
+    </div>
+  );
+};
+
+export default LoginScreen;
