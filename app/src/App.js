@@ -1,5 +1,10 @@
 import React, { useEffect } from "react";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  useHistory,
+} from "react-router-dom";
 
 import "./App.css";
 import Game from "./components/Game/Game";
@@ -8,7 +13,8 @@ import LoginScreen from "./components/LoginScreen/LoginScreen";
 
 import socketIOClient from "socket.io-client";
 
-function App() {
+const App = () => {
+  const history = useHistory();
   // useEffect(() => {
   //   const socket = socketIOClient("http://localhost:4516/");
   //   console.log(socket);
@@ -16,9 +22,9 @@ function App() {
   //     console.log(data);
   //   });
   // }, []);
+  // This allows for routing the jsx based off the url
   return (
-    // This allows for routing the jsx based off the url
-    <Router>
+    <Router history={history}>
       <div id="App">
         {/* Only allow a single route to load */}
         <Switch>
@@ -35,6 +41,6 @@ function App() {
       </div>
     </Router>
   );
-}
+};
 
 export default App;

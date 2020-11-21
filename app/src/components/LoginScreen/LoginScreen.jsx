@@ -27,8 +27,8 @@ const LoginScreen = () => {
     history.push("/game");
   };
 
+  // username and password text and input field
   return (
-    // username and password text and input field
     <div className={`login-container ${pseudoHidden ? 'hidden' : ''}`}>
       <form className="login-form" action="api/authenticate" method="POST">
         <label>Username:</label>
