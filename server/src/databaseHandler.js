@@ -1,5 +1,6 @@
 const sqlite3 = require("sqlite3")
 const { promisify } = require("util");
+const User = require("./User");
 
 const db = new sqlite3.Database('./src/database.db');
 
@@ -9,6 +10,9 @@ const database = exports;
 const dbGet = promisify(db.get).bind(db);
 const dbRun = promisify(db.run).bind(db);
 
+
+database.getUser = async (user) => await dbGet('SELECT * FROM users WHERE name = ? COLLATE NOCASE',
+    [user.getUsername()]);
 
 database.createUser = async (user) => {
     // insert the id, username and password into the database

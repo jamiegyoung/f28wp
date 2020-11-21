@@ -2,10 +2,6 @@ const bcrypt = require("bcryptjs");
 const { v4: uuidv4 } = require("uuid");
 
 class User {
-    id;
-    _name;
-    _pass;
-
     constructor() {
         // Define id on creation
         this.id = uuidv4();

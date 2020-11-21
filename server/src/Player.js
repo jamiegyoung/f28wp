@@ -1,7 +1,4 @@
 class Player {
-  id;
-  experience;
-
   constructor(id, experience) {
     this.id = id;
     this.experience = experience;

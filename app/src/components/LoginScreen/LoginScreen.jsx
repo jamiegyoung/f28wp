@@ -30,7 +30,7 @@ const LoginScreen = () => {
   // username and password text and input field
   return (
     <div className={`login-container ${pseudoHidden ? 'hidden' : ''}`}>
-      <form className="login-form" action="api/authenticate" method="POST">
+      <form className="login-form" action="api/authenticate-user" method="POST">
         <label>Username:</label>
         <input type="text" name="username" placeholder="Username" required />
         <label>Password:</label>

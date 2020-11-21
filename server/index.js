@@ -4,6 +4,7 @@ const server = require("http").createServer(app);
 const io = require("socket.io")(server);
 const cookieParser = require("cookie-parser");
 const session = require("express-session");
+const bodyParser = require("body-parser");
 const SqliteStore = require("connect-sqlite3")(session);
 // const { v4: uuidv4 } = require("uuid");
 const config = require("./src/config.json");
@@ -11,6 +12,7 @@ const { Player } = require("./src/Player");
 const User = require("./src/User");
 const rateLimit = require("express-rate-limit");
 const database = require("./src/databaseHandler");
+const bcrypt = require("bcryptjs");
 
 const storeOptions = {
   dir: __dirname + "/src/",
@@ -20,6 +22,10 @@ const storeOptions = {
 const port = process.env.PORT || config.port;
 
 app.use(cookieParser());
+
+app.use(bodyParser.json());
+
+app.use(bodyParser.urlencoded({ extended: true }));
 
 // app.use(
 //   session({
@@ -56,6 +62,12 @@ const accountCreationLimiter = rateLimit({
   message: "Please do not create too many accounts!",
 });
 
+const accountLoginLimiter = rateLimit({
+  windowMs: 60 * 60 * 1000,
+  max: 60,
+  message: "Please do not login too many times!",
+});
+
 // const sessionChecker = (req) => {
 //   if (req.session.user && req.session.user_sid) {
 //     return true;
@@ -63,22 +75,62 @@ const accountCreationLimiter = rateLimit({
 //   return false;
 // };
 
-// api for creating the user
-app.get("/api/create-user", accountCreationLimiter, async (req, res) => {
-  // Define a new user and set the username & password
+// Generic bad request response for any unprocessable queries
+const invalidInput = (res, msg) => {
+  res.status(400).send({ success: false, error: msg });
+};
 
-  // Generic bad request response for any unprocessable queries
-  const invalidInput = (msg) => {
-    res.status(400).send({ success: false, error: msg });
-  };
+app.post("/api/authenticate-user", accountLoginLimiter, async (req, res) => {
 
   // Inform the user if the username or password or both are missing from the query
-  if (!req.query.user && !req.query.pass)
+
+  if (!req.body.username && !req.body.password)
+    return invalidInput(res, "Missing username and password");
+
+  if (!req.body.username) return invalidInput(res, "Missing username");
+
+  if (!req.body.password) return invalidInput(res, "Missing password");
+
+  const user = new User();
+
+  try {
+    user.setUsername(req.body.username);
+  } catch (error) {
+    return invalidInput(res, error);
+  }
+
+  const dbResUser = await database.getUser(user);
+
+  const handleFailedLogin = () => res.status(401).send({ success: false, error: "Username or password not found" });
+
+  if (!dbResUser) return handleFailedLogin();
+
+  if (await bcrypt.compare(req.body.password, dbResUser.pass)) {
+    // 200 OK
+    return res.status(200).send({ success: true });
+  }
+  // 401 Unauthorized
+  return handleFailedLogin();
+
+  /*if (!req.query.user && !req.query.pass)
     return invalidInput("Missing username and password");
 
   if (!req.query.user) return invalidInput("Missing username");
 
   if (!req.query.pass) return invalidInput("Missing password");
+*/
+})
+// api for creating the user
+app.get("/api/create-user", accountCreationLimiter, async (req, res) => {
+  // Define a new user and set the username & password
+
+  // Inform the user if the username or password or both are missing from the query
+  if (!req.query.user && !req.query.pass)
+    return invalidInput(res, "Missing username and password");
+
+  if (!req.query.user) return invalidInput(res, "Missing username");
+
+  if (!req.query.pass) return invalidInput(res, "Missing password");
 
   // Define a new user
   const user = new User();
@@ -86,14 +138,14 @@ app.get("/api/create-user", accountCreationLimiter, async (req, res) => {
   try {
     user.setUsername(req.query.user);
   } catch (error) {
-    return invalidInput("Username too long (max 16 characters)");
+    return invalidInput(res, error);
   }
 
   try {
     // Need to await password due to hashing
     await user.setPassword(req.query.pass);
   } catch (error) {
-    return invalidInput("Password too long (max 128 characters)");
+    return invalidInput(res, error);
   }
 
   // Check if the user exists before creating it
