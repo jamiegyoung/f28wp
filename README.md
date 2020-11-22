@@ -42,4 +42,4 @@ or
 cd server
 yarn start-dev
 ```
-_Note when using the dev version, some urls/ports are hardcoded in the app and therefore will have to be changed manually, the default port to look for is 30284[?](https://www.random.org/integers/?num=1&min=5001&max=49151&col=5&base=10&format=html&rnd=)_
+_Note when using the dev version, some urls/ports are hardcoded in the app and therefore will have to be changed manually (this will hopefully be changed sometime in the future), the default port to look for is 30284[?](https://www.random.org/integers/?num=1&min=5001&max=49151&col=5&base=10&format=html&rnd=)_
