@@ -6,7 +6,7 @@ const cookieParser = require("cookie-parser");
 const session = require("express-session");
 const bodyParser = require("body-parser");
 const SqliteStore = require("connect-sqlite3")(session);
-// const { v4: uuidv4 } = require("uuid");
+const { v4: uuidv4 } = require("uuid");
 const config = require("./src/config.json");
 const { Player } = require("./src/Player");
 const User = require("./src/User");
@@ -27,15 +27,15 @@ app.use(bodyParser.json());
 
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// app.use(
-//   session({
-//     store: new SqliteStore(storeOptions), // use sqlite3 for session storage
-//     resave: false,
-//     saveUninitialized: false,
-//     secret: config.sessionSecret,
-//     cookie: { maxAge: 7 * 24 * 60 * 60 * 1000 }, // 1 week
-//   })
-// )
+app.use(
+  session({
+    store: new SqliteStore(storeOptions), // use sqlite3 for session storage
+    resave: false,
+    saveUninitialized: false,
+    secret: config.sessionSecret,
+    cookie: { maxAge: 7 * 24 * 60 * 60 * 1000 }, // 1 week
+  })
+)
 
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*");
@@ -68,12 +68,12 @@ const accountLoginLimiter = rateLimit({
   message: "Please do not login too many times!",
 });
 
-// const sessionChecker = (req) => {
-//   if (req.session.user && req.session.user_sid) {
-//     return true;
-//   }
-//   return false;
-// };
+const sessionChecker = (req) => {
+  if (req.session.user_sid) {
+    return true;
+  }
+  return false;
+};
 
 // Generic bad request response for any unprocessable queries
 const invalidInput = (res, msg) => {
@@ -107,19 +107,15 @@ app.post("/api/authenticate-user", accountLoginLimiter, async (req, res) => {
 
   if (await bcrypt.compare(req.body.password, dbResUser.pass)) {
     // 200 OK
-    return res.status(200).send({ success: true });
+    const sid = uuidv4();
+    req.session.user_sid = sid;
+    return res.status(200).redirect("/game");
   }
   // 401 Unauthorized
   return handleFailedLogin();
 
-  /*if (!req.query.user && !req.query.pass)
-    return invalidInput("Missing username and password");
-
-  if (!req.query.user) return invalidInput("Missing username");
-
-  if (!req.query.pass) return invalidInput("Missing password");
-*/
 })
+
 // api for creating the user
 app.get("/api/create-user", accountCreationLimiter, async (req, res) => {
   // Define a new user and set the username & password
@@ -166,18 +162,20 @@ app.get("/api/create-user", accountCreationLimiter, async (req, res) => {
   });
 });
 
+app.get("/game", (req, res) => {
+  if (!sessionChecker(req)) {
+    return res.redirect("/");
+  }
+  res.sendFile(__dirname + "/index.html");
+})
+
 // Serve the react app
 app.get("*", (req, res) => {
-  res.sendFile(__dirname + "/build/index.html");
+  if (sessionChecker(req)) {
+    return res.redirect("/game");
+  }
+  res.sendFile(__dirname + "/index.html");
 });
-
-// app.get("/login-request", async (req, res) => {
-//   const user = new User()
-//   user.setUsername(req.query.user)
-//   await user.setPassword(req.query.pass)
-
-//   // check if user exists
-// });
 
 // on connection
 io.on("connection", (socket) => {
