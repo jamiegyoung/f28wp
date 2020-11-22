@@ -10,8 +10,9 @@ import "./App.css";
 import Game from "./components/Game/Game";
 import StartMenu from "./components/StartMenu/StartMenu";
 import LoginScreen from "./components/LoginScreen/LoginScreen";
+import NoMatch from './components/NoMatch'
 
-import socketIOClient from "socket.io-client";
+// import socketIOClient from "socket.io-client";
 
 const App = () => {
   const history = useHistory();
@@ -36,6 +37,9 @@ const App = () => {
           </Route>
           <Route path="/game">
             <Game></Game>
+          </Route>
+          <Route path="*">
+            <NoMatch></NoMatch>
           </Route>
         </Switch>
       </div>
