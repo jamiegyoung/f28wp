@@ -1,5 +1,5 @@
 # Type Titans
-> A MMO where you taken on a titan with your tapping skills!
+> A MMO where you take on a titan with your tapping skills!
 
 
 ![concept-art](https://i.imgur.com/A7MT8Yf.png)
