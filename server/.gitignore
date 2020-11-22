@@ -119,3 +119,8 @@ src/sessions
 src/config.json
 src/database.db
 node_modules/
+
+# This will be added when building the app
+index.html
+build/
+database.db

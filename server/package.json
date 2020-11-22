@@ -7,11 +7,14 @@
     "express": "^4.17.1",
     "express-rate-limit": "^5.1.3",
     "express-session": "^1.17.1",
+    "ora": "^5.1.0",
     "socket.io": "^3.0.1",
     "uuid": "^8.3.1"
   },
   "scripts": {
+    "prestart": "node bin/server-scripts.js",
     "start": "node index.js",
+    "prestart-dev": "node bin/server-scripts.js",
     "start-dev": "SET PORT=30284 && node index.js"
   }
 }
