@@ -80,6 +80,32 @@ const invalidInput = (res, msg) => {
   res.status(400).send({ success: false, error: msg });
 };
 
+const loginUser = async (username, password, req, res) => {
+  const user = new User();
+
+  try {
+    user.setUsername(username);
+  } catch (error) {
+    return invalidInput(res, error);
+  }
+
+  const dbResUser = await database.getUser(user);
+
+  const handleFailedLogin = () => res.status(401).send({ success: false, error: "Username or password not found" });
+
+  if (!dbResUser) return handleFailedLogin();
+
+  if (await bcrypt.compare(password, dbResUser.pass)) {
+    // 200 OK
+    const sid = uuidv4();
+    req.session.user_sid = sid;
+    return res.status(200).redirect("/game");
+  }
+  // 401 Unauthorized
+  return handleFailedLogin();
+
+};
+
 app.post("/api/authenticate-user", accountLoginLimiter, async (req, res) => {
 
   // Inform the user if the username or password or both are missing from the query
@@ -91,6 +117,23 @@ app.post("/api/authenticate-user", accountLoginLimiter, async (req, res) => {
 
   if (!req.body.password) return invalidInput(res, "Missing password");
 
+  loginUser(req.body.username, req.body.password, req, res);
+
+})
+
+// api for creating the user
+app.post("/api/create-user", accountCreationLimiter, async (req, res) => {
+  // Define a new user and set the username & password
+  console.log(req.body);
+  // Inform the user if the username or password or both are missing from the query
+  if (!req.body.username && !req.body.password)
+    return invalidInput(res, "Missing username and password");
+
+  if (!req.body.username) return invalidInput(res, "Missing username");
+
+  if (!req.body.password) return invalidInput(res, "Missing password");
+  
+  // Define a new user
   const user = new User();
 
   try {
@@ -99,47 +142,9 @@ app.post("/api/authenticate-user", accountLoginLimiter, async (req, res) => {
     return invalidInput(res, error);
   }
 
-  const dbResUser = await database.getUser(user);
-
-  const handleFailedLogin = () => res.status(401).send({ success: false, error: "Username or password not found" });
-
-  if (!dbResUser) return handleFailedLogin();
-
-  if (await bcrypt.compare(req.body.password, dbResUser.pass)) {
-    // 200 OK
-    const sid = uuidv4();
-    req.session.user_sid = sid;
-    return res.status(200).redirect("/game");
-  }
-  // 401 Unauthorized
-  return handleFailedLogin();
-
-})
-
-// api for creating the user
-app.get("/api/create-user", accountCreationLimiter, async (req, res) => {
-  // Define a new user and set the username & password
-
-  // Inform the user if the username or password or both are missing from the query
-  if (!req.query.user && !req.query.pass)
-    return invalidInput(res, "Missing username and password");
-
-  if (!req.query.user) return invalidInput(res, "Missing username");
-
-  if (!req.query.pass) return invalidInput(res, "Missing password");
-
-  // Define a new user
-  const user = new User();
-
-  try {
-    user.setUsername(req.query.user);
-  } catch (error) {
-    return invalidInput(res, error);
-  }
-
   try {
     // Need to await password due to hashing
-    await user.setPassword(req.query.pass);
+    await user.setPassword(req.body.password);
   } catch (error) {
     return invalidInput(res, error);
   }
@@ -157,9 +162,12 @@ app.get("/api/create-user", accountCreationLimiter, async (req, res) => {
   await database.createUser(user);
 
   // send HTTP code 201 (created)
-  res.status(201).send({
-    success: true,
-  });
+  // res.status(201).send({
+  //   success: true,
+  // });
+
+  loginUser(req.body.username, req.body.password, req, res)
+
 });
 
 app.get("/game", (req, res) => {
