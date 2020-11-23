@@ -1,5 +1,4 @@
-class Boss extends Stage {
-    super(level);
+class Boss {
 
     constructor(id, level, wordLength, userDamage){
         this.id = id;

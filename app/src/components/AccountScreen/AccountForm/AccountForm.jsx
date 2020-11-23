@@ -55,7 +55,6 @@ const AccountForm = ({ registration }) => {
             className={`${isSame ? "same" : "not-same"}`}
             onChange={handleConfirmPasswordValue}
             type="password"
-            name="confirm-password"
             placeholder="Password"
             required
           />
