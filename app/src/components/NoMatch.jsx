@@ -25,7 +25,7 @@ const NoMatch = () => {
       }
       setCurrentFrame(currentFrame + 1);
     }, 500);
-  }, [currentFrame]);
+  }, [currentFrame, frames.length]);
 
   return (
     <div

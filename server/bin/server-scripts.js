@@ -4,6 +4,7 @@ const { v4: uuidv4 } = require("uuid");
 const ora = require("ora");
 const sqlite3 = require("sqlite3");
 const spinner = ora("").start();
+const open = require("open");
 
 const handleDatabase = () => {
   spinner.text = "Checking database";
@@ -95,4 +96,11 @@ handleDatabase();
 checkAppBuild();
 
 spinner.prefixText = "";
-spinner.succeed("Successfully initialized start-up");
+
+const config = require("../src/config.json");
+const port = process.env.PORT || config.port;
+spinner.succeed(
+  `Successfully initialized start-up, opening http://localhost:${port}`
+);
+
+open(`http://localhost:${port}`);

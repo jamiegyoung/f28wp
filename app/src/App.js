@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import {
   BrowserRouter as Router,
   Switch,
@@ -9,8 +9,8 @@ import {
 import "./App.css";
 import Game from "./components/Game/Game";
 import StartMenu from "./components/StartMenu/StartMenu";
-import LoginScreen from "./components/LoginScreen/LoginScreen";
 import NoMatch from './components/NoMatch'
+import AccountScreen from './components/AccountScreen/AccountScreen';
 
 // import socketIOClient from "socket.io-client";
 
@@ -23,6 +23,7 @@ const App = () => {
   //     console.log(data);
   //   });
   // }, []);
+
   // This allows for routing the jsx based off the url
   return (
     <Router history={history}>
@@ -33,7 +34,10 @@ const App = () => {
             <StartMenu></StartMenu>
           </Route>
           <Route path="/login">
-            <LoginScreen></LoginScreen>
+            <AccountScreen></AccountScreen>
+          </Route>
+          <Route path="/register">
+            <AccountScreen registration></AccountScreen>
           </Route>
           <Route path="/game">
             <Game></Game>
