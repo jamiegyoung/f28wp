@@ -30,7 +30,7 @@ if (fse.existsSync(server_dir + "/index.html")) {
 if (fse.existsSync(server_dir + '/build/index.html')) {
   spinner.text = "Copying index.html from build to server"
   spinner.color = "green"
-  fse.copyFileSync(server_dir + '/build/index.html', server_dir + "/index.html")
+  fse.renameSync(server_dir + '/build/index.html', server_dir + "/index.html")
 }
 
 spinner.succeed("Finished")
