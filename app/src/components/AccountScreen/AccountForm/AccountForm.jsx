@@ -63,7 +63,7 @@ const AccountForm = ({ registration }) => {
       ) : (
         null
       )}
-      <button className={isSame ? '' : 'disabled'} disabled={!isSame} type="submit">
+      <button className={isSame || !registration ? '' : 'disabled'} disabled={!isSame && registration} type="submit">
         {registration ? "Sign Up" : "Login"}
       </button>
     </form>
