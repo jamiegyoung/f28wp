@@ -64,7 +64,7 @@ const sessionChecker = (req) => {
   return false;
 };
 
-// Generic bad request response for any un-processable queries
+// Generic bad request response for any unprocessable queries
 const invalidInput = (res, msg) => {
   res.status(400).send({ success: false, error: msg });
 };
@@ -139,10 +139,7 @@ app.post("/api/create-user", accountCreationLimiter, async (req, res) => {
   // Check if the user exists before creating it
   if (await database.checkUserExists({name: user.getUsername()})) {
     // If the user exists send a conflict error code with some json explaining why
-    return res.status(409).send({
-      success: false,
-      error: "User already exists",
-    });
+    return res.status(409).redirect("/user-exists");
   }
 
   // create the user in the database

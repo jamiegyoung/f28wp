@@ -38,7 +38,7 @@ const LoginFail = () => {
             textAlign: "center",
           }}
         >
-          Username or password not found! Please click{" "}
+          Username or password not found! Please click {" "}
           <Link
             style={{
               color: '#80c3ea'
