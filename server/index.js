@@ -2,10 +2,7 @@ const express = require("express");
 const app = express();
 const server = require("http").createServer(app);
 const io = require("socket.io")(server);
-const cookieParser = require("cookie-parser");
-const session = require("express-session");
 const bodyParser = require("body-parser");
-const SqliteStore = require("connect-sqlite3")(session);
 const { v4: uuidv4 } = require("uuid");
 const config = require("./src/config.json");
 const { Game, Player } = require('./src/Game/Game')
@@ -21,21 +18,9 @@ const storeOptions = {
 // 30284 is the development port. If there is no environment variable PORT it just uses the config
 const port = process.env.PORT || config.port;
 
-app.use(cookieParser());
-
 app.use(bodyParser.json());
 
 app.use(bodyParser.urlencoded({ extended: true }));
-
-const sessionMiddleware = session({
-    store: new SqliteStore(storeOptions), // use sqlite3 for session storage
-    resave: false,
-    saveUninitialized: false,
-    secret: config.sessionSecret,
-    cookie: { maxAge: 7 * 24 * 60 * 60 * 1000 }, // 1 week
-});
-
-app.use(sessionMiddleware);
 
 io.use((socket, next) => {
   sessionMiddleware(socket.request, {}, next);

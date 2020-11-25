@@ -22,9 +22,10 @@ const GamePlatform = () => {
     <pre
       style={{
         textAlign: "center",
-        fontSize: "24px",
+        fontSize: "18px",
         color: "#eeee",
-        marginTop: "0px",
+        margin: "2px 0 0 0",
+        lineHeight: '10px'
       }}
     >
       {`${Array(widthCount).join("#")}`}
