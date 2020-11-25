@@ -8,10 +8,10 @@ const SoundButton = () => {
 
   useEffect(() => {
     // TODO: uncomment on launch
-    if (!muted) {
-      music.play()
-      return;
-    }
+    // if (!muted) {
+    //   music.play()
+    //   return;
+    // }
     music.pause()
   }, [muted, music])
 
