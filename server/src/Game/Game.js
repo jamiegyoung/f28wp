@@ -84,7 +84,6 @@ class Game {
   }
 
   handleGameConnections() {
-    console.log(this.io);
     this.io.on("connection", (socket) => {
       const userId = socket.request.session.user_id;
       const userSid = socket.request.session.user_sid;

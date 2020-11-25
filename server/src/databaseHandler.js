@@ -28,17 +28,16 @@ database.createUser = async (user) => {
 };
 
 // if the username, ignoring caps, exists return true and if not return false
-database.checkUserExists = (user) => {
+database.checkUserExists = async (user) => {
   if (user.name) {
-    return dbGet(
-      // potentially a redundent await
+    return await dbGet(
       "SELECT id FROM users WHERE name = ? COLLATE NOCASE",
       [user.name]
     )
       ? true
       : false;
   }
-  return dbGet(
+  return await dbGet(
     // potentially a redundant await
     "SELECT id FROM users WHERE id = ? COLLATE NOCASE",
     [user.id]

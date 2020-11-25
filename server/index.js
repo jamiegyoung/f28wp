@@ -64,7 +64,7 @@ const sessionChecker = (req) => {
   return false;
 };
 
-// Generic bad request response for any unprocessable queries
+// Generic bad request response for any un-processable queries
 const invalidInput = (res, msg) => {
   res.status(400).send({ success: false, error: msg });
 };
