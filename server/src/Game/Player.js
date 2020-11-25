@@ -16,17 +16,15 @@ class Player {
     return 95 * Math.pow(Math.E, this.level / 100);
   }
 
-  get damage() {
-    
-    return 20 * Math.pow(Math.E, this.level / 105);
+  getDamage(wordLength) {
+    return wordLength * (20 * Math.pow(Math.E, this.level / 105));
   }
-  
-  set damage(wordLength){
+
+  set damage(wordLength) {
     return wordLength * userDamage;
   }
-  addExperience(){
 
-  }
+  addExperience() {}
 }
 
 module.exports = Player

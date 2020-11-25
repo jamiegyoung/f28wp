@@ -1,34 +1,35 @@
+const {
+  uniqueNamesGenerator,
+  adjectives,
+  names,
+} = require("unique-names-generator");
 class Boss {
+  constructor() {
+    this.generateName();
+    console.log(this.name);
+    this.generateHealth();
+  }
 
-    constructor(id, level, wordLength, userDamage){
-        this.id = id;
-        this.level = level;
-        this.wordLength = wordLength;
-        this.userDamage = userDamage;
-    }
+  generateHealth() {
+    this.health = 100 + Math.random() * 25;
+  }
 
-    sethealth(level){
+  generateName() {
+    const generatedName = uniqueNamesGenerator({
+      dictionaries: [names, adjectives],
+    }).split("_");
 
-    }
+    this.name = `${generatedName[0]} the ${generatedName[1]}`;
+  }
 
-    get health(){
 
-    }
+  decrementHealth() {
 
-    decrementHealth(){
-        
-    }
+  }
 
-    setdamage(){
+  get experienceGiven() {
 
-    }
-
-    get damage(){
-        
-    }
-
-    get experienceGiven(){
-
-    }
-
+  }
 }
+
+module.exports = Boss;

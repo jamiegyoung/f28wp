@@ -1,10 +1,32 @@
 const Player = require("./Player");
 const Boss = require("./Boss");
-const Stage = require("./Stage");
+const randomWords = require("random-words");
 
-const Game = () => {
-  // Start game n stuff
-  console.log('starting game server');
+class Game {
+  // Start game
+  constructor() {
+    console.log("starting game!");
+    this.boss = new Boss();
+
+    // Used for the visual aspect of other players
+    this.players = [];
+  }
+
+  addPlayer(player) {
+    this.players.push(player.id);
+  }
+
+  removePlayer(player) {
+    this.player.pop(player.id);
+  }
+
+  playerDidDamage(player, word) {
+    // player.
+  }
+
+  static generateDamageWords() {
+    return randomWords({ min: 3, max: 10})
+  }
 }
 
-module.exports = { Game, Player, Boss, Stage };
+module.exports = { Game, Player, Boss };
