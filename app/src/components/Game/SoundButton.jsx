@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
 import gameMusic from './Media/Kevin_MacLeod_-_8bit_Dungeon_Boss.mp3'
+import Cookies from "js-cookie";
 
 const SoundButton = () => {
   const [muted, setMuted] = useState(false);

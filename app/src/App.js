@@ -13,11 +13,13 @@ import NoMatch from "./components/NoMatch";
 import AccountScreen from "./components/AccountScreen/AccountScreen";
 import LoginFail from "./LoginFail";
 import UserAlreadyExists from "./UserAlreadyExists";
+import CookieConsent from "./CookieConsent";
 
 const App = () => {
   const history = useHistory();
   
   // This allows for routing the jsx based off the url
+  <CookieConsent></CookieConsent>
   return (
     <Router history={history}>
       <div id="App">
