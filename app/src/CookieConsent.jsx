@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import { Link } from "react-router-dom";
+import Cookies from 'js-cookie'
 
 const CookieConsent = () => {
   const [pseudoHidden, setPseudoHidden] = useState(true);
@@ -8,6 +9,7 @@ const CookieConsent = () => {
   useEffect(() => {
     setTimeout(() => {
       if (!isComponentLoaded) return;
+      Cookies.get();
       setPseudoHidden(false);
     }, 200);
 
@@ -16,23 +18,31 @@ const CookieConsent = () => {
     };
   }, []);
 
+  const closeBanner = () => {
+    if (Cookies.get() != "banner") Cookies.set("banner");
+    setPseudoHidden(true); //TODO fix this
+  }
+
   return (
     <center><div
       style={{
         display: "flex",
-        justifyContent: "bottom",
+        position: "fixed",
+        bottom: "0px",
         alignItems: "center",
-        height: "-1vh",
+        
       }}
     >
       <div style={{
+        position: "center",
+
         width: "100%",
-        height: "02%",
+        height: "100px",
         backgroundColor: '#212121',
         borderRadius: '10px',
         boxShadow: '0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23)'
       }}>
-        <h1
+        <h3
         className="noselect"
           style={{
             color: "white",
@@ -40,8 +50,9 @@ const CookieConsent = () => {
           }}
         >
           By playing this game, you agree to let us use of cookies. This is only to better your experience.
-        </h1>
+        </h3>
         <button
+            onClick = {closeBanner}
             style = {{
                 backgroundColor: "green",
                 position: "center",
@@ -51,9 +62,10 @@ const CookieConsent = () => {
                 fontSize: "16px",
                 margin: "4px 2px",
                 cursor: "pointer",
-            }}>Okay!</button>
+            }}>Okay!</button> 
       </div>
     </div></center>
+    // TODO: Fix pseudoHidden // TODO: add cookie to remember that banner has been closed. // TODO: Move to center of screen.
   );
 };
 

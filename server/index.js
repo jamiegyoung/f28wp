@@ -95,12 +95,12 @@ const loginUser = async (username, password, req, res) => {
 
   const dbResUser = await database.getUser(user);
 
-  const handleFailedLogin = () => 
+  const handleFailedLogin = () => // Handle what happens when username or password don't match
   res
     .status(401)
     .redirect("/login-failed");
 
-  if (!dbResUser) return handleFailedLogin();
+  if (!dbResUser) return handleFailedLogin(); // If log doesn't, redirect to UserAlreadyExists page.
 
   if (await bcrypt.compare(password, dbResUser.pass)) {
     // 200 OK
@@ -154,7 +154,7 @@ app.post("/api/create-user", accountCreationLimiter, async (req, res) => {
     return invalidInput(res, error);
   }
 
-  // Check if the user exists before creating it
+  // Check if the user exists before creating it. If it doesn't, redirect to UserAlreadyExists page.
   if (await database.checkUserExists(user)) {
     return res
       .status(409)
