@@ -8,7 +8,7 @@ const bodyParser = require("body-parser");
 const SqliteStore = require("connect-sqlite3")(session);
 const { v4: uuidv4 } = require("uuid");
 const config = require("./src/config.json");
-const { Game, Player, Stage, Boss } = require('./src/Game/Game')
+const { Game, Player } = require('./src/Game/Game')
 const User = require("./src/User");
 const rateLimit = require("express-rate-limit");
 const database = require("./src/databaseHandler");
@@ -27,15 +27,19 @@ app.use(bodyParser.json());
 
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.use(
-  session({
+const sessionMiddleware = session({
     store: new SqliteStore(storeOptions), // use sqlite3 for session storage
     resave: false,
     saveUninitialized: false,
     secret: config.sessionSecret,
     cookie: { maxAge: 7 * 24 * 60 * 60 * 1000 }, // 1 week
-  })
-)
+});
+
+app.use(sessionMiddleware);
+
+io.use((socket, next) => {
+  sessionMiddleware(socket.request, {}, next);
+});
 
 // app.use((req, res, next) => {
 //   res.header("Access-Control-Allow-Origin", "*");
@@ -91,7 +95,10 @@ const loginUser = async (username, password, req, res) => {
 
   const dbResUser = await database.getUser(user);
 
-  const handleFailedLogin = () => res.status(401).redirect("/login-failed");
+  const handleFailedLogin = () => 
+  res
+    .status(401)
+    .redirect("/login-failed");
 
   if (!dbResUser) return handleFailedLogin();
 
@@ -103,7 +110,6 @@ const loginUser = async (username, password, req, res) => {
   }
   // 401 Unauthorized
   return handleFailedLogin();
-
 };
 
 app.post("/api/authenticate-user", accountLoginLimiter, async (req, res) => {
@@ -118,7 +124,6 @@ app.post("/api/authenticate-user", accountLoginLimiter, async (req, res) => {
   if (!req.body.password) return invalidInput(res, "Missing password");
 
   loginUser(req.body.username, req.body.password, req, res);
-
 })
 
 // api for creating the user
@@ -166,8 +171,7 @@ app.post("/api/create-user", accountCreationLimiter, async (req, res) => {
   //   success: true,
   // });
 
-  loginUser(req.body.username, req.body.password, req, res)
-
+  loginUser(req.body.username, req.body.password, req, res);
 });
 
 app.get("/game", (req, res) => {
@@ -175,7 +179,7 @@ app.get("/game", (req, res) => {
     return res.redirect("/");
   }
   res.sendFile(__dirname + "/index.html");
-})
+});
 
 // Serve the react app
 app.get("*", (req, res) => {
@@ -185,30 +189,16 @@ app.get("*", (req, res) => {
   res.sendFile(__dirname + "/index.html");
 });
 
+// TODO refactor
+const game = new Game();
+
 // on connection
 io.on("connection", (socket) => {
-  console.log("User connected");
-  setTimeout(() => {
-    socket.emit("test", { success: true });
-    console.log("data sent to test");
-  }, 5000);
-  socket.on("disconnect", () => {
-    console.log("User disconnected");
-  });
-
-  console.log("User connected");
-  const player = new Player("asd", 15000);
-  setTimeout(() => {
-    socket.emit("test", {
-      level: player.level,
-      damage: player.damage,
-      health: player.health,
-    });
-    console.log("data sent to test");
-  }, 5000);
-  socket.on("disconnect", () => {
-    console.log("User disconnected");
-  });
+  if (!socket.request.session.user_sid) return;
+  socket.emit("sentence", Game.generateDamageWords());
+  const sentenceInterval = setInterval(() => {
+    socket.emit("sentence", Game.generateDamageWords());
+  }, 10000);
 });
 
 server.listen(port, () => console.log(`started server on port ${port}`));

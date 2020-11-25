@@ -46,7 +46,7 @@ const LoginFail = () => {
             to="/login"
           >
             here
-          </Link>{" "}
+          </Link>
           to go back or register.
         </h1>
       </div>
