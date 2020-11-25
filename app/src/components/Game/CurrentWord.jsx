@@ -51,7 +51,6 @@ const CurrentWord = (props) => {
             height: "100%",
             fontSize: "48px",
             margin: "0px",
-            fontWeight: "bold",
             color: "white",
             textAlign: "center",
           }}
