@@ -10,7 +10,8 @@ const SoundButton = () => {
     // TODO: uncomment on launch
     if (!muted) {
       music.volume = ".25";
-      music.play();
+      music.play()
+      .catch(() => setMuted(!muted))
       return;
     }
     music.pause();

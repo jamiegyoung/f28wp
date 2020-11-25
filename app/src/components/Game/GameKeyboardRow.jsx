@@ -12,7 +12,7 @@ const GameKeyboardRow = ({ row, index }) => {
     <div
       style={{
         display: "flex",
-        marginLeft: index * 40
+        marginLeft: index * 40,
       }}
     >
       {row.split("").map((x) => (
@@ -20,9 +20,9 @@ const GameKeyboardRow = ({ row, index }) => {
           style={{
             transition: "all .1s ease-out",
             color: "#cccc",
-            fontSize: "20px",
+            fontSize: "18px",
             margin: "0px 2px 0px 0px",
-            height: '90px'
+            height: "80px",
           }}
           key={x}
           id={`key-${x}`}

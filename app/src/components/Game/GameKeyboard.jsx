@@ -9,7 +9,7 @@ const GameKeyboard = () => {
   useEffect(() => {
     window.addEventListener("keydown", (e) => {
       if (e.repeat) return;
-      if (e.key == 'Backspace') getKeyboardSound("down").play();
+      if (e.key === "Backspace" || e.key === "Enter") getKeyboardSound("down").play();
       const keyPressed = e.key === " " ? "SPACE" : e.key.toUpperCase();
       const key = document.getElementById(`key-${keyPressed}`);
       if (!key) return;
@@ -19,7 +19,7 @@ const GameKeyboard = () => {
 
     window.addEventListener("keyup", (e) => {
       if (e.repeat) return;
-      if (e.key == 'Backspace') getKeyboardSound("up").play();
+      if (e.key === "Backspace" || e.key === "Enter") getKeyboardSound("up").play();
       const keyPressed = e.key === " " ? "SPACE" : e.key.toUpperCase();
       const key = document.getElementById(`key-${keyPressed}`);
       if (!key) return;
@@ -55,7 +55,7 @@ const GameKeyboard = () => {
             style={{
               transition: "all .1s ease-out",
               color: "#cccc",
-              fontSize: "20px",
+              fontSize: "18px",
               margin: "0px 0px 0px 50px",
               height: "110px",
             }}
