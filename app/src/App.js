@@ -12,6 +12,7 @@ import StartMenu from "./components/StartMenu/StartMenu";
 import NoMatch from "./components/NoMatch";
 import AccountScreen from "./components/AccountScreen/AccountScreen";
 import LoginFail from "./LoginFail";
+import UserAlreadyExists from "./UserAlreadyExists";
 
 const App = () => {
   const history = useHistory();
@@ -33,6 +34,9 @@ const App = () => {
           </Route>
           <Route path="/register">
             <AccountScreen registration></AccountScreen>
+          </Route>
+          <Route path="/user-exists">
+            <UserAlreadyExists></UserAlreadyExists>
           </Route>
           <Route path="/game">
             <Game></Game>
