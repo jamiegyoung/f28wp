@@ -77,7 +77,7 @@ const GameContent = () => {
   }, [targetWords]);
 
   useEffect(() => {
-    setSocket(io("http://localhost:30284"));
+    setSocket(io());
   }, []);
 
   return (

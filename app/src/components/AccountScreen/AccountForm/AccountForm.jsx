@@ -26,7 +26,7 @@ const AccountForm = ({ registration }) => {
   return (
     <form
       className="account-form"
-      action={`http://localhost:30284/api/${
+      action={`/api/${
         // Depending on the value of registration, 
         // it will either post to the login api or the user creation api
         registration ? "create-user" : "authenticate-user"
