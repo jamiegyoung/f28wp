@@ -136,12 +136,10 @@ app.post("/api/create-user", accountCreationLimiter, async (req, res) => {
     return invalidInput(res, error);
   }
 
-  // Check if the user exists before creating it
+  // Check if the username exists before creating a new user with it.
   if (await database.checkUserExists({name: user.getUsername()})) {
-    // If the user exists send a conflict error code with some json explaining why
-    return res.status(409).send({
-      success: false,
-      error: "User already exists",
+    // If the username already exists, redirect them to UserAlreadyExists screen.
+    return res.status(409).redirect("/user-exists");
     });
   }
 

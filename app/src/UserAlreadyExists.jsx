@@ -38,7 +38,7 @@ const UserAlreadyExists = () => {
             textAlign: "center",
           }}
         >
-          Username already exists! Please click{" "}
+          Username already exists! Please click {" "}
           <Link
             style={{
               color: '#80c3ea'
