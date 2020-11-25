@@ -12,16 +12,22 @@ import StartMenu from "./components/StartMenu/StartMenu";
 import NoMatch from "./components/NoMatch";
 import AccountScreen from "./components/AccountScreen/AccountScreen";
 import LoginFail from "./LoginFail";
+import UserAlreadyExists from "./UserAlreadyExists";
+import CookieConsent from "./CookieConsent";
 
 const App = () => {
   const history = useHistory();
   
   // This allows for routing the jsx based off the url
+  
   return (
     <Router history={history}>
       <div id="App">
         {/* Only allow a single route to load */}
         <Switch>
+          <Route path="/cokkie">
+            <CookieConsent></CookieConsent>
+          </Route>
           <Route path="/" exact>
             <StartMenu></StartMenu>
           </Route>
@@ -33,6 +39,9 @@ const App = () => {
           </Route>
           <Route path="/register">
             <AccountScreen registration></AccountScreen>
+          </Route>
+          <Route path="/user-exists">
+            <UserAlreadyExists></UserAlreadyExists>
           </Route>
           <Route path="/game">
             <Game></Game>
