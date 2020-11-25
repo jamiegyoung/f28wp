@@ -11,6 +11,7 @@ import Game from "./components/Game/Game";
 import StartMenu from "./components/StartMenu/StartMenu";
 import NoMatch from "./components/NoMatch";
 import AccountScreen from "./components/AccountScreen/AccountScreen";
+import LoginFail from "./LoginFail";
 
 const App = () => {
   const history = useHistory();
@@ -26,6 +27,9 @@ const App = () => {
           </Route>
           <Route path="/login">
             <AccountScreen></AccountScreen>
+          </Route>
+          <Route path="/login-failed">
+            <LoginFail></LoginFail>
           </Route>
           <Route path="/register">
             <AccountScreen registration></AccountScreen>
