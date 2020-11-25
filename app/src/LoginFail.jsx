@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { Link } from "react-router-dom";
 
 const LoginFail = () => {
@@ -33,6 +33,7 @@ const [pseudoHidden, setPseudoHidden] = useState(true);
           to="/login"
         >here</Link> to go back or register.</h1>
       </div>
+  )
 }
 
 export default LoginFail
