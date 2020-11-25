@@ -1,30 +1,43 @@
+const db = require('../databaseHandler');
+
 class Player {
-  constructor(id, experience) {
+  constructor(id) {
     this.id = id;
-    this.experience = experience;
+    this.getExperience();
   }
 
-  get level() {
-    const level = Math.floor(25 * Math.log(this.experience / 2000 + 1)) + 1;
+  async getExperience() {
+    if (this.experience) return this.experience;
+    const player = await db.getPlayer(this.id)
+    console.log('getting db xp');
+    if (player && player.experience) {
+      this.experience = player.experience;
+      return this.experience
+    }
+    this.experience = 0
+    return this.experience;
+  }
+
+  async getLevel() {
+    const level = Math.floor(25 * Math.log(await this.getExperience() / 2000 + 1)) + 1;
     if (level > 100) {
       return 100;
     }
     return level;
   }
 
-  get health() {
-    return 95 * Math.pow(Math.E, this.level / 100);
+  async getDamage(wordLength) {
+    return wordLength * (20 * Math.pow(Math.E, await this.getLevel() / 105));
   }
 
-  getDamage(wordLength) {
-    return wordLength * (20 * Math.pow(Math.E, this.level / 105));
+  async addExperience(xp) {
+    this.experience = await this.getExperience() + xp;
+    console.log(this.experience);
   }
 
-  set damage(wordLength) {
-    return wordLength * userDamage;
+  async savePlayer() {
+    db.savePlayer(this.id, await this.getExperience())
   }
-
-  addExperience() {}
 }
 
 module.exports = Player

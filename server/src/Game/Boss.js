@@ -53,7 +53,7 @@ class Boss {
 
   get experienceGiven() {
     // TODO: calculate experience
-    return 100;
+    return Math.floor(100 + (Math.random() * 100))
   }
 }
 

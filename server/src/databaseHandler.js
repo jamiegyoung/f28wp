@@ -39,7 +39,7 @@ database.checkUserExists = (user) => {
       : false;
   }
   return dbGet(
-    // potentially a redundent await
+    // potentially a redundant await
     "SELECT id FROM users WHERE id = ? COLLATE NOCASE",
     [user.id]
   )
@@ -50,7 +50,6 @@ database.checkUserExists = (user) => {
 database.getPlayer = (id) => dbGet("SELECT * FROM players WHERE id = ?", [id]);
 
 database.updatePlayerExperience = (id, experience) => {
-  console.log(experience);
   dbRun("UPDATE players SET experience = ? WHERE id = ?", [experience, id]);
 };
 

@@ -7,24 +7,55 @@ class Game {
   constructor(io) {
     this.io = io;
     this.boss = new Boss();
-    // Used for the visual aspect of other players
+    // As bizarre as it seems, unique players are used for damage calculation and visual aspects,
+    // players is used for experience addition as multiple connections need to be handled so
+    // xp cannot be duplicated
+    this.uniquePlayers = [];
     this.players = [];
     this.sockets = [];
     this.startGameLoop();
     this.handleGameConnections();
   }
 
+  addUniquePlayer(player) {
+    this.uniquePlayers.push(player);
+  }
+
   addPlayer(player) {
     this.players.push(player);
   }
 
-  // Recursivley remove players in-case there are multiple
+  removeSocket(socket) {
+    const index = this.sockets.findIndex(x => x.request.session.user_id == socket.request.session.user_id)
+    if (index > -1) {
+      this.sockets.splice(index, 1);
+    }
+  }
+
+  // Recursively remove players in-case there are multiple
   removePlayer(player) {
-    const index = this.players.indexOf(player.id);
+    // Find player to remove
+    const index = this.players.findIndex((x) => x.id == player.id);
+    // remove player
     if (index > -1) {
       this.players.splice(index, 1);
-      this.removePlayer(player);
     }
+    // If the player was the last of its own id, remove the unique also
+    const playerStillExists = this.players.find((x) => x.id === player.id);
+    if (!playerStillExists) {
+      const uniqueIndex = this.uniquePlayers.findIndex(
+        (x) => x.id === player.id
+      );
+      if (uniqueIndex > -1) {
+        this.uniquePlayers.splice(uniqueIndex, 1);
+      }
+    }
+    // const index = this.uniquePlayers.indexOf(player.id);
+    // console.log(index);
+    // if (index > -1) {
+    //   this.uniquePlayers.splice(index, 1);
+    //   this.removePlayer(player);
+    // }
   }
 
   static generateDamageWords() {
@@ -34,9 +65,8 @@ class Game {
   startGameLoop() {
     setInterval(() => {
       if (this.boss.dead) {
-        const uniquePlayers = [...new Set(this.players)];
-        uniquePlayers.forEach((player) => {
-          player.addExperience(this.boss.experienceGiven);
+        this.players.forEach(async (player) => {
+          await player.addExperience(this.boss.experienceGiven);
         });
         this.boss = new Boss();
       }
@@ -54,28 +84,25 @@ class Game {
   }
 
   handleGameConnections() {
+    console.log(this.io);
     this.io.on("connection", (socket) => {
       const userId = socket.request.session.user_id;
       const userSid = socket.request.session.user_sid;
       // Stops one person connecting twice (prevents duplicate logins and therefore duplicate experience)
       if (!userSid) return;
       if (!userId) return;
-      if (this.players.includes(userId)) return;
-      console.log("adding player");
       this.sockets.push(socket);
-      const player = new Player(userId);
-      this.addPlayer(player);
       this.sendGameInfo(socket);
+      const player = new Player(userId);
 
       socket.on("message", async (data) => {
         if (this.wordList && this.wordList.includes(data)) {
-          const playerCount = [...new Set(this.players)].length;
           const damage = await player.getDamage(data.length);
           const damagedCalced =
-            damage / playerCount +
-            damage / (playerCount * (playerCount * (damage / 25)));
-          console.log(this.boss.health);
-          console.log(damagedCalced);
+            damage / this.uniquePlayers.length +
+            damage /
+              (this.uniquePlayers.length *
+                (this.uniquePlayers.length * (damage / 25)));
           this.boss.decrementHealth(damagedCalced);
           this.sendGameInfo(socket);
         }
@@ -91,10 +118,15 @@ class Game {
         player.addExperience(100);
         player.savePlayer();
         this.removePlayer(player);
-        this.sockets.pop(socket);
+        this.removeSocket(socket);
       });
+
+      this.addPlayer(player);
+      console.log("adding player");
+      if (this.uniquePlayers.find((x) => x.id == userId)) return;
+      this.addUniquePlayer(player);
     });
-  };
+  }
 
   sendGameInfo(socket) {
     socket.emit("gameInfo", {
