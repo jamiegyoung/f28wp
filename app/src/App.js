@@ -19,12 +19,15 @@ const App = () => {
   const history = useHistory();
   
   // This allows for routing the jsx based off the url
-  <CookieConsent></CookieConsent>
+  
   return (
     <Router history={history}>
       <div id="App">
         {/* Only allow a single route to load */}
         <Switch>
+          <Route path="/cokkie">
+            <CookieConsent></CookieConsent>
+          </Route>
           <Route path="/" exact>
             <StartMenu></StartMenu>
           </Route>

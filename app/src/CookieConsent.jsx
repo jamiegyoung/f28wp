@@ -17,16 +17,17 @@ const CookieConsent = () => {
   }, []);
 
   return (
-    <div
+    <center><div
       style={{
         display: "flex",
         justifyContent: "bottom",
         alignItems: "center",
-        height: "30vh",
+        height: "-1vh",
       }}
     >
       <div style={{
-        maxWidth: '500px',
+        width: "100%",
+        height: "02%",
         backgroundColor: '#212121',
         borderRadius: '10px',
         boxShadow: '0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23)'
@@ -52,7 +53,7 @@ const CookieConsent = () => {
                 cursor: "pointer",
             }}>Okay!</button>
       </div>
-    </div>
+    </div></center>
   );
 };
 
