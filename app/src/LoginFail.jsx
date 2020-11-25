@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 import { Link } from "react-router-dom";
 
 const LoginFail = () => {
-const [pseudoHidden, setPseudoHidden] = useState(true);
+  const [pseudoHidden, setPseudoHidden] = useState(true);
   const isComponentLoaded = useRef(true);
 
   useEffect(() => {
@@ -20,20 +20,38 @@ const [pseudoHidden, setPseudoHidden] = useState(true);
     <div
       style={{
         display: "flex",
-        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center",
+        height: "100vh",
+      }}
+    >
+      <div style={{
+        maxWidth: '500px',
+        backgroundColor: '#212121',
+        borderRadius: '10px',
+        boxShadow: '0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23)'
       }}>
-          <h1 style = {{
-              color: "white",
-              marginTop: "50px",
-          }}>Username or password not found! Please click <Link
+        <h1
+        className="noselect"
           style={{
             color: "white",
-            marginTop: "50px",
+            textAlign: "center",
           }}
-          to="/login"
-        >here</Link> to go back or register.</h1>
+        >
+          Username or password not found! Please click{" "}
+          <Link
+            style={{
+              color: '#80c3ea'
+            }}
+            to="/login"
+          >
+            here
+          </Link>{" "}
+          to go back or register.
+        </h1>
       </div>
-  )
-}
+    </div>
+  );
+};
 
-export default LoginFail
+export default LoginFail;
