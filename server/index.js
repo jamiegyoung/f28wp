@@ -196,7 +196,7 @@ const game = new Game();
 io.on("connection", (socket) => {
   if (!socket.request.session.user_sid) return;
   socket.emit("sentence", Game.generateDamageWords());
-  const sentenceInterval = setInterbal(() => {
+  const sentenceInterval = setInterval(() => {
     socket.emit("sentence", Game.generateDamageWords());
   }, 10000);
 });
