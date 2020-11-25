@@ -6,24 +6,6 @@ const sqlite3 = require("sqlite3");
 const spinner = ora("").start();
 const open = require("open");
 
-const handleDatabase = () => {
-  spinner.text = "Checking database";
-  const dbPath = path.resolve("src/database.db");
-  try {
-    const db = new sqlite3.Database(dbPath);
-    db.get("SELECT * FROM users", (err) => {
-      if (err) {
-        createUsersTable(db);
-      }
-      db.close();
-    });
-  } catch (error) {
-    spinner.warn(
-      "Potential invalid database setup, an error occurred when attempting to fix"
-    );
-  }
-};
-
 const createUsersTable = (db) => {
   spinner.text = "Creating users table in database";
   db.run(
@@ -35,6 +17,44 @@ const createUsersTable = (db) => {
         );
     }
   );
+};
+
+const createPlayersTable = (db) => {
+  spinner.text = "Creating users table in database";
+  db.run(
+    "CREATE TABLE IF NOT EXISTS players (id varchar(36), experience UNSIGNED BIG INT)",
+    (_runRes, err) => {
+      if (err)
+        spinner.warn(
+          "An error occured when attempting to create the users table"
+        );
+    }
+  );
+};
+
+const handleDatabase = () => {
+  spinner.text = "Checking database";
+  const dbPath = path.resolve("src/database.db");
+  try {
+    const db = new sqlite3.Database(dbPath);
+    db.get("SELECT * FROM users", (err) => {
+      if (err) {
+        createUsersTable(db);
+      }
+    });
+
+    db.get("SELECT * FROM players", (err) => {
+      if (err) {
+        createPlayersTable(db);
+      }
+    });
+
+    db.close();
+  } catch (error) {
+    spinner.warn(
+      "Potential invalid database setup, an error occurred when attempting to fix"
+    );
+  }
 };
 
 const handleConfig = () => {
