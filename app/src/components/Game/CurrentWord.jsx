@@ -17,11 +17,11 @@ const CurrentWord = ({ wordTypedCallback, targetWord }) => {
       if (
         e.key === "Backspace" &&
         e.repeat &&
-        currentWordRef.current.length !== 0
+        currentWordRef.current.length !== 0 
       ) {
         // play the audio and remove all the letters from the current word
         setCurrentWord([]);
-        new Audio(removeAllLettersAudio).play();
+        new Audio(removeAllLettersAudio).play(); // If Backspace is held, remove the whole string typed in the bar.
         return;
       }
 

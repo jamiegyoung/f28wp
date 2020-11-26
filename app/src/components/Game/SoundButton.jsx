@@ -6,31 +6,30 @@ import Cookies from "js-cookie";
 const SoundButton = () => {
   const [muted, setMuted] = useState(false);
   const [music] = useState(new Audio(gameMusic));
-  const cookieOp = Cookies;
+  const cookieOp = Cookies; // Instantiate Cookies.
 
   useEffect(() => {
+    // Function that checks for musicmuted cookie to leave music muted when a user leaves and rejoins the game (without logging out since it is session-bound)
     const checkForCookies = () => {
       if (cookieOp.get() === "musicmuted" ? true : false);
     };
 
-    // If a cookie does not exist and the it is currently muted, play music.
+    // If a cookie does not exist the music is not currently muted, play music.
     if (!muted && !checkForCookies()) {
       music.loop = true;
       music.volume = ".25";
       music.play().catch(() => setMuted(!muted));
       return;
     }
-
+    
     music.pause();
-    // eslint-disable-next-line
   }, [muted, music]);
 
   useEffect(() => {
     return () => {
-      music.pause();
-    };
-    // eslint-disable-next-line
-  }, []);
+      music.pause()
+    }
+  })
 
   return (
     <div

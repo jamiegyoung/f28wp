@@ -113,7 +113,7 @@ const GameContent = () => {
       socket.emit("message", wordsCompleted[wordsCompleted.length - 1]);
       // remove the word from words completed
       setWordsCompleted((state) => {
-        state.pop();
+        state.pop(); // Pop completed words from list.
         return state;
       });
     }
@@ -145,13 +145,10 @@ const GameContent = () => {
         <GameBoss
           bossType={
             // if the game info exists, set the type to the boss sent, else set it to the question mark
-            gameInfo
-              ? bossTypes[gameInfo.type]
-              : bossTypes[0]
+            gameInfo ? bossTypes[gameInfo.type] : bossTypes[0]
           }
-          // set the name of the boss
+          // Conditionals: assign values of gameInfo to current Boss. If they don't exist, set a default value.
           name={gameInfo ? gameInfo.name : ""}
-          // set the health of the boss
           health={gameInfo ? gameInfo.health : 25}
           // set the max health of the boss
           maxHealth={gameInfo ? gameInfo.maxHealth : 25}

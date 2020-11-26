@@ -1,14 +1,13 @@
 import React from "react";
 
-const GameKeyboardRow = ({ row, index }) => {
-  // the ascii for the keys
+const GameKeyboardRow = ({ row, index }) => { // Below is the ASCII art for the on-screen keyboard with a parameter key as input to render the correct keys on the keyboard
   const generateKey = (key) =>
     ` _____
 |+---+|
 || ${key} ||
 |+---+|
  ‾‾‾‾‾`;
-
+// Render the styling for the buttons
   return (
     <div
       style={{

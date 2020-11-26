@@ -149,7 +149,7 @@ app.post("/api/create-user", accountCreationLimiter, async (req, res) => {
 
 // Handle logging out. This is redirected to from the logout button on the GameContent page
 app.get("/logout", (req, res) => {
-  req.session.user_id = undefined;
+  req.session.user_id = undefined; // Rid of user's unique id and session id, then redirect to StartMenu
   req.session.user_sid = undefined;
   res.redirect('/');
   

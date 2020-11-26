@@ -18,7 +18,7 @@ const InstructionsPage = () => {
       isComponentLoaded.current = false;
     };
   }, []);
-
+// Render a div container with Tutorial info and a button that links to the StartMenu page.
   return (
     <div className={`instructions-container ${pseudoHidden ? "hidden" : ""}`}>
       <h1>Welcome to Type Titans</h1>
