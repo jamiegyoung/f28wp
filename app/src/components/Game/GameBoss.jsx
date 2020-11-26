@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useEffect } from "react";
 import GameBossHealthBar from "./GameBossHealthBar";
 import GamePlayer from "./GamePlayer";
+import getDeathSound from "./getDeathSound";
 import getLevelUpSound from "./getLevelUpSound";
 
 const bossTypes = [
@@ -196,6 +197,27 @@ const GameBoss = ({
 }) => {
   const [otherPlayers, setOtherPlayers] = useState([]);
   const [playerLevel, setPlayerLevel] = useState(0);
+  const [isDead, setDead] = useState(false);
+  const [bossHealth, setBossHealth] = useState();
+  const [damaged, setDamaged] = useState(false);
+
+  useEffect(() => {
+    if (bossHealth > health) {
+      setDamaged(true);
+      // do damage anim
+      setTimeout(() => {
+        setDamaged(false);
+      }, 200);
+    }
+    setBossHealth(health);
+  }, [health]);
+
+  useEffect(() => {
+    if (dead && !isDead) {
+      getDeathSound();
+    }
+    setDead(dead);
+  }, [dead]);
 
   useEffect(() => {
     if (isNaN(numPlayers) || numPlayers < 0) return;
@@ -267,7 +289,18 @@ const GameBoss = ({
               <GamePlayer isPlayer={true}></GamePlayer>
             </div>
             <pre style={{ color: "#eeee", fontSize: "18px", margin: "0px" }}>
-              {bossType}
+              {damaged
+                ? bossType
+                    .split("")
+                    .map((x) =>
+                      Math.random() > 0.1
+                        ? x
+                        : Math.random() >= 0.5
+                        ? " " + x
+                        : x + " "
+                    )
+                    .join("")
+                : bossType}
             </pre>
             <div
               style={{

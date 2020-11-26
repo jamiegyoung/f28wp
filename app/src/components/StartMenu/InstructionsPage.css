@@ -1,19 +1,26 @@
 .instructions-container {
-    height: 100vh;
+    /* height: 100vh; */
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     transition: all .2s ease-out;
+    padding: 100px 20px;
   }
   
   .instructions-container p, .instructions-container h1, .instructions-container pre{
-    width: 75vw;
     max-width: 500px;
     color: white;
-    text-align: center;
+  }
+
+  .instructions-container pre {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    margin: 0px 5vw;
   }
   
   .instructions-container p {
     font-size: 1.3em;
+    text-align: center;
   }
