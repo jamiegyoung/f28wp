@@ -93,7 +93,6 @@ const GameContent = () => {
       // name: this.boss.name,
       // health: this.boss.health,
       // maxHealth: this.boss.initialHealth,
-      // experienceWorth: this.boss.experienceGiven,
       // dead: this.boss.dead,
       // type: this.boss.type,
       // numOtherPlayers: this.uniquePlayers.length

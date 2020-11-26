@@ -54,10 +54,9 @@ const GameKeyboard = () => {
         flexDirection: "column",
       }}
       className="noselect"
-    >
-      {/* for each row in the array */}
+      >
+        {/* generate a keyboard row for each row */}
       {rows.map((row, index) => (
-        // generate a keyboard row
         <GameKeyboardRow key={index} index={index} row={row}></GameKeyboardRow>
       ))}
       <div

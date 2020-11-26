@@ -46,13 +46,17 @@ database.checkUserExists = async (user) => {
     : false;
 };
 
+// get the player using the id
 database.getPlayer = (id) => dbGet("SELECT * FROM players WHERE id = ?", [id]);
 
+// update the player experience using the id
 database.updatePlayerExperience = (id, experience) => {
   dbRun("UPDATE players SET experience = ? WHERE id = ?", [experience, id]);
 };
 
+// save players id and experience
 database.savePlayer = async (id, experience) => {
+  // check the user exists, if so, update, else insert
   if (!(await this.getPlayer(id))) {
     return dbRun("INSERT INTO players VALUES (?, ?)", [id, experience]);
   }

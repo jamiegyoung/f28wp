@@ -3,11 +3,13 @@ import { useEffect } from "react";
 
 // The challenge of creating a responsive ascii ui
 const Background = () => {
+  // calculate how many characters will fill the width of the background
   const calcWidth = () => {
     const count = Math.floor(window.innerWidth / 11.2 - 4);
     return count ? count : 1;
   };
 
+  // calculate how many characters will fill the height of the background
   const calcHeight = () => {
     const count = Math.floor(window.innerHeight / 11.2 - 5);
     return count ? count : 1;
@@ -18,6 +20,7 @@ const Background = () => {
   const [characterHeightCount, setCharacterHeightCount] = useState(calcHeight);
 
   useEffect(() => {
+    // whenever the window is resized, recalculate the asciis
     const handleResize = () => {
       setCharacterWidthCount(calcWidth);
       setCharacterHeightCount(calcHeight);

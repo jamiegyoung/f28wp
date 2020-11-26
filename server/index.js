@@ -22,12 +22,16 @@ const storeOptions = {
 // 30284 is the development port. If there is no environment variable PORT it just uses the config
 const port = process.env.PORT || config.port;
 
+// Allow for reading of cookies
 app.use(cookieParser());
 
+// Allow for reading of JSON
 app.use(bodyParser.json());
 
+// Allow for reading of forms
 app.use(bodyParser.urlencoded({ extended: true }));
 
+// define session storage for remembering users
 const sessionMiddleware = session({
   store: new SqliteStore(storeOptions), // use sqlite3 for session storage
   resave: false,
@@ -36,12 +40,15 @@ const sessionMiddleware = session({
   cookie: { maxAge: 7 * 24 * 60 * 60 * 1000 }, // 1 week
 });
 
+// use the session storage with express
 app.use(sessionMiddleware);
 
+// use the session storage with socket
 io.use((socket, next) => {
   sessionMiddleware(socket.request, {}, next);
 });
 
+// expose build as static
 app.use(express.static(__dirname + "/build"));
 
 // Set a 1 hour rate limit on account creation
@@ -57,6 +64,7 @@ const accountLoginLimiter = rateLimit({
   message: "Please do not login too many times!",
 });
 
+// check if the user has a session id
 const sessionChecker = (req) => {
   if (req.session.user_sid) {
     return true;
@@ -69,9 +77,11 @@ const invalidInput = (res, msg) => {
   res.status(400).send({ success: false, error: msg });
 };
 
+// handle logging in the user, called both when logging in and after registering
 const loginUser = async (username, password, req, res) => {
   const user = new User();
 
+  // attempt to set the username and password and return an invalid input if it fails
   try {
     user.setUsername(username);
   } catch (error) {
@@ -82,23 +92,28 @@ const loginUser = async (username, password, req, res) => {
 
   const handleFailedLogin = () => res.status(401).redirect("/login-failed");
 
+  // if the user doesn't exist in the database
   if (!dbResUser) return handleFailedLogin();
 
+  // compare the password with the hash using bcrypt
   if (await bcrypt.compare(password, dbResUser.pass)) {
     // 200 OK
+    // generate a uuid and assign it to the user
     const sid = uuidv4();
     req.session.user_id = dbResUser.id;
     req.session.user_sid = sid;
+    // redirect them to the game
     return res.status(200).redirect("/game");
   }
   // 401 Unauthorized
   return handleFailedLogin();
 };
 
-
+// Authorizing Login
 app.post("/api/authenticate-user", accountLoginLimiter, async (req, res) => {
   // Inform the user if the username or password or both are missing from the query
 
+  // if a username or password wasn't sent send the appropriate response
   if (!req.body.username && !req.body.password)
     return invalidInput(res, "Missing username and password");
 
@@ -106,6 +121,7 @@ app.post("/api/authenticate-user", accountLoginLimiter, async (req, res) => {
 
   if (!req.body.password) return invalidInput(res, "Missing password");
 
+  // login the user
   loginUser(req.body.username, req.body.password, req, res);
 });
 
@@ -113,15 +129,16 @@ app.post("/api/authenticate-user", accountLoginLimiter, async (req, res) => {
 app.post("/api/create-user", accountCreationLimiter, async (req, res) => {
   // Inform the user if the username or password or both are missing from the query
   if (!req.body.username && !req.body.password)
-  return invalidInput(res, "Missing username and password");
-  
+    return invalidInput(res, "Missing username and password");
+
   if (!req.body.username) return invalidInput(res, "Missing username");
-  
+
   if (!req.body.password) return invalidInput(res, "Missing password");
-  
+
   // Define a new user and set the username & password
   const user = new User();
 
+  // attempt to set username
   try {
     user.setUsername(req.body.username);
   } catch (error) {
@@ -136,7 +153,7 @@ app.post("/api/create-user", accountCreationLimiter, async (req, res) => {
   }
 
   // Check if the username already exists before creating a new user.
-  if (await database.checkUserExists({name: user.getUsername()})) {
+  if (await database.checkUserExists({ name: user.getUsername() })) {
     // If the username exists, redirect to UserAlreadyExists page.
     return res.status(409).redirect("/user-exists");
   }
@@ -149,21 +166,24 @@ app.post("/api/create-user", accountCreationLimiter, async (req, res) => {
 
 // Handle logging out. This is redirected to from the logout button on the GameContent page
 app.get("/logout", (req, res) => {
-  req.session.user_id = undefined; // Rid of user's unique id and session id, then redirect to StartMenu
+  // Rid of user's unique id and session id, then redirect to StartMenu
+  req.session.user_id = undefined;
   req.session.user_sid = undefined;
-  res.redirect('/');
-  
-})
+  res.redirect("/");
+});
 
 app.get("/game", (req, res) => {
+  // if the user is not logged in, send them back to the home screen
   if (!sessionChecker(req)) {
     return res.redirect("/");
   }
+  // else return the standard file
   res.sendFile(__dirname + "/index.html");
 });
 
 // Serve the react app
 app.get("*", (req, res) => {
+  // if the user is logged in, send them to /game
   if (sessionChecker(req)) {
     return res.redirect("/game");
   }
@@ -174,5 +194,4 @@ app.get("*", (req, res) => {
 const game = new Game(io);
 
 // on connection
-
 server.listen(port, () => console.log(`started server on port ${port}`));

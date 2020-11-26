@@ -2,7 +2,9 @@ import React, { useEffect } from "react";
 import { useState } from "react";
 
 const NoMatch = () => {
+  // current animation frame
   const [currentFrame, setCurrentFrame] = useState(0);
+  // animation frames
   const frames = [
     `
  \\_O_/  
@@ -18,6 +20,7 @@ const NoMatch = () => {
   `,
   ];
 
+  // change the frame ever 500ms
   useEffect(() => {
     setTimeout(() => {
       if (currentFrame >= frames.length - 1) {

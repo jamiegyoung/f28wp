@@ -198,7 +198,6 @@ const GameBoss = ({
   dead,
   level,
 }) => {
-
   const [otherPlayers, setOtherPlayers] = useState([]);
   const [playerLevel, setPlayerLevel] = useState(0);
   const [isDead, setDead] = useState(false);
@@ -264,6 +263,7 @@ const GameBoss = ({
             display: "flex",
             alignItems: "center",
             flexDirection: "column",
+            
           }}
         >
           <h1
@@ -290,8 +290,9 @@ const GameBoss = ({
               style={{
                 display: "flex",
                 flexDirection: "column",
-                alignContent: "center",
+                alignItems: "center",
                 justifyContent: "center",
+                marginRight: '10px'
               }}
             >
               <p
@@ -308,8 +309,8 @@ const GameBoss = ({
             </div>
             <pre style={{ color: "#eeee", fontSize: "18px", margin: "0px" }}>
               {damaged
-              // if the boss is damaged, randomly add spaces to the sprite in order to generate a damaged looking boss
-                ? bossType
+                ? // if the boss is damaged, randomly add spaces to the sprite in order to generate a damaged looking boss
+                  bossType
                     .split("")
                     .map((x) =>
                       Math.random() > 0.1
