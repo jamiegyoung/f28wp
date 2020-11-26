@@ -153,7 +153,6 @@ const GameContent = () => {
             height: "100vh",
             position: "fixed",
             backdropFilter: "blur(5px)",
-            zIndex: "1",
             backgroundColor: "#000000cc",
             display: "flex",
             flexDirection: "column",
@@ -164,14 +163,18 @@ const GameContent = () => {
         >
           <h1>Already Logged In!</h1>
           <p>Check your tabs</p>
-          <p
-            onClick={() => window.location.reload()}
-            style={{
-              cursor: "pointer",
-              textDecoration: "underline",
-            }}
-          >
-            Click here or refresh to retry connection
+          <p>
+            Please wait a few seconds and click{" "}
+            <span
+              onClick={() => window.location.reload()}
+              style={{
+                cursor: "pointer",
+                textDecoration: "underline",
+              }}
+            >
+              here
+            </span>{" "}
+            or refresh this page to try again
           </p>
         </div>
       ) : null}

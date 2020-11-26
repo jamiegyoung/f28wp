@@ -74,15 +74,13 @@ class Game {
       // generate a new word list
       this.wordList = Game.generateDamageWords().map((x) => x.toUpperCase());
 
-      setTimeout(() => {
-        // for each socket, give them the sentence and provide them with their player info
-        this.sockets.forEach((socket) => {
-          this.sendGameInfo(socket);
-          socket.emit("sentence", this.wordList);
-          const player = new Player(socket.request.session.user_id);
-          this.sendPlayerInfo(player, socket);
-        });
-      }, 1000);
+      // for each socket, give them the sentence and provide them with their player info
+      this.sockets.forEach((socket) => {
+        this.sendGameInfo(socket);
+        socket.emit("sentence", this.wordList);
+        const player = new Player(socket.request.session.user_id);
+        this.sendPlayerInfo(player, socket);
+      });
     }, 20000);
   }
 
@@ -96,7 +94,7 @@ class Game {
       if (!userId) return;
       if (this.players.find((x) => x.id == userId)) {
         // notify the user that they are already logged in
-        socket.emit('already-logged-in')
+        socket.emit("already-logged-in");
         return;
       }
       // push their socket to sockets for interaction in the game lop
@@ -126,7 +124,7 @@ class Game {
       // send the game info every 2.5 seconds
       const gameInfoInterval = setInterval(() => {
         this.sendGameInfo(socket);
-      }, 2500);
+      }, 500);
 
       // when the user disconnects
       socket.on("disconnect", () => {

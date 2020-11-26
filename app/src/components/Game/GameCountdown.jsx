@@ -46,8 +46,7 @@ const GameCountdown = ({ reset }) => {
           fontSize: "48px",
           margin: "0px 0px 5px 0px",
         }}
-      >
-        [{time}]
+      >{reset.length > 0 ? `[${time}]` : "[PREPARE YOURSELF]"}
       </p>
     </div>
   );

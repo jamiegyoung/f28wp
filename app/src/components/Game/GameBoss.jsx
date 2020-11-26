@@ -270,6 +270,7 @@ const GameBoss = ({
             style={{
               color: "#eeee",
               fontWeight: "normal",
+              margin: "0"
             }}
           >
             {/* use the name of the boss name prop */}
