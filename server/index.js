@@ -51,7 +51,7 @@ io.use((socket, next) => {
 // expose build as static
 app.use(express.static(__dirname + "/build"));
 
-// Set a 1 hour rate limit on account creation
+// Set a 1 hour rate limit on account creation per IP
 const accountCreationLimiter = rateLimit({
   windowMs: 60 * 60 * 1000,
   max: 5,
@@ -108,6 +108,9 @@ const loginUser = async (username, password, req, res) => {
   // 401 Unauthorized
   return handleFailedLogin();
 };
+
+// Required as server is on a reverse proxy
+app.set('trust proxy', 1);
 
 // Authorizing Login
 app.post("/api/authenticate-user", accountLoginLimiter, async (req, res) => {
