@@ -76,7 +76,7 @@ class Game {
       if (!this.boss.dead) {
         this.boss.resetHealth();
         this.uniquePlayers.forEach(async (player) => {
-          await player.addExperience(this.boss.experienceGiven);
+          await player.addExperience(this.boss.experienceGiven / 10);
         });
       }
 

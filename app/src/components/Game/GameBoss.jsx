@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useEffect } from "react";
 import GameBossHealthBar from "./GameBossHealthBar";
 import GamePlayer from "./GamePlayer";
+import getLevelUpSound from './getLevelUpSound';
 
 const bossTypes = [
   // Made by Jamie Young
@@ -196,7 +197,10 @@ const GameBoss = ({
   }, [numPlayers]);
 
   useEffect(() => {
-    setPlayerLevel(level);
+    if (level > playerLevel) {
+      getLevelUpSound();
+      setPlayerLevel(level);
+    }
   }, [level]);
 
   return (
