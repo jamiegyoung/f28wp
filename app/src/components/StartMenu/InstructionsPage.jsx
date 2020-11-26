@@ -4,6 +4,7 @@ import "./InstructionsPage.css";
 import GoBackButton from "./GoBackButton/GoBackButton";
 
 const InstructionsPage = () => {
+  // Functions that defines a Tutorial/Help screen found on the main page.
   const [pseudoHidden, setPseudoHidden] = useState(true);
   const isComponentLoaded = useRef(true);
 
@@ -17,7 +18,7 @@ const InstructionsPage = () => {
       isComponentLoaded.current = false;
     };
   }, []);
-
+// Render a div container with Tutorial info and a button that links to the StartMenu page.
   return (
     <div className={`instructions-container ${pseudoHidden ? "hidden" : ""}`}>
       <h1>Welcome to Type Titans</h1>

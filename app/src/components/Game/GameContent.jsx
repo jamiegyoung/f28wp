@@ -81,10 +81,10 @@ const GameContent = () => {
     })
 
     if(wordsCompleted[wordsCompleted.length - 1]) {
-      getHitSound();
+      getHitSound(); // Play the sound that gives audio feedback for a successfully complted
       socket.emit("message", wordsCompleted[wordsCompleted.length - 1]);
       setWordsCompleted((state) => {
-        state.pop();
+        state.pop(); // Pop completed words from list.
         return state;
       });
 
@@ -117,7 +117,7 @@ const GameContent = () => {
               ? bossTypes[gameInfo.type]
               : bossTypes[Math.floor(Math.random() * bossTypes.length)]
           }
-          name={gameInfo ? gameInfo.name : ""}
+          name={gameInfo ? gameInfo.name : ""} // Conditionals: assign values of gameInfo to current Boss. If they don't exist, set a default value.
           health={gameInfo ? gameInfo.health : 25}
           maxHealth={gameInfo ? gameInfo.maxHealth : 25}
           dead={gameInfo ? gameInfo.dead : false}

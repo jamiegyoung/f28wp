@@ -1,7 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-const LoginFail = () => {
+const LoginFail = () => { // LoginFail screen renders basic text and href-type Link from ReactJS's RouterDOM in a div container to take the user back to the login page.
+// If the login has failed (username or password not found), this page is displayed to give the user a choice to try again.
   return (
     <div
       style={{

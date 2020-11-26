@@ -12,13 +12,14 @@ const CurrentWord = ({ wordTypedCallback, targetWord }) => {
     wordTypedCallback
   ) => {
     return window.addEventListener("keydown", (e) => {
+      // When a key is pressed...
       if (
         e.key === "Backspace" &&
         e.repeat &&
-        currentWordRef.current.length !== 0
+        currentWordRef.current.length !== 0 
       ) {
         setCurrentWord([]);
-        new Audio(removeAllLettersAudio).play();
+        new Audio(removeAllLettersAudio).play(); // If Backspace is held, remove the whole string typed in the bar.
         return;
       }
 

@@ -6,11 +6,11 @@ const GoBackButton = () => {
   const history = useHistory();
   const [hasStarted, setHasStarted] = useState(false);
   const [pseudoHidden, setPseudoHidden] = useState(false);
-  
+  // Use states and pseudohidden to make the button pop up and transition.
   useEffect(() => {
     if (hasStarted) {
       setTimeout(() => {
-        history.push('/');
+        history.push('/'); // Take the user to the StartMenu
       }, 200);
       return setPseudoHidden(true);
     }
@@ -18,7 +18,7 @@ const GoBackButton = () => {
   }, [hasStarted, history])
 
   return <div
-    className={`goback-button ${pseudoHidden ? 'hidden' : ''}`}
+    className={`goback-button ${pseudoHidden ? 'hidden' : ''}`} // Hide when clicked, smooth transition on click
     onClick={() => setHasStarted(true)}
   >
     <p className="noselect">Go Back</p>

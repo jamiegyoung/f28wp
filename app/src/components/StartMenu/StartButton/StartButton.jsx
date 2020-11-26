@@ -10,7 +10,7 @@ const StartButton = () => {
   useEffect(() => {
     if (hasStarted) {
       setTimeout(() => {
-        history.push('/login');
+        history.push('/login'); // When clicked, take the user to the Login screen
       }, 200);
       return setPseudoHidden(true);
     }
