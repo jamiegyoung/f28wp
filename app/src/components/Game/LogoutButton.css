@@ -1,10 +1,11 @@
 .logout-button {
-    width: 200px;
-    height: 100px;
+    width: 100px;
+    height: 50px;
     bottom: 50px;
     position: fixed;
     left: 50px;
-    background-color: #424242;
+    background-color: #212121;
+    border: solid 1px #cccccc;
     border-radius: 10px;
     box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
     transition: all 0.1s ease-out;
@@ -23,7 +24,7 @@
     margin: 0;
     color: white;
     margin-bottom: 2px;
-    font-size: 2em;
+    font-size: 20px;
   }
   
   .logout-button.hidden {

@@ -111,17 +111,15 @@ app.post("/api/authenticate-user", accountLoginLimiter, async (req, res) => {
 
 // api for creating the user
 app.post("/api/create-user", accountCreationLimiter, async (req, res) => {
-  // Define a new user and set the username & password
-  console.log(req.body);
   // Inform the user if the username or password or both are missing from the query
   if (!req.body.username && !req.body.password)
-    return invalidInput(res, "Missing username and password");
-
+  return invalidInput(res, "Missing username and password");
+  
   if (!req.body.username) return invalidInput(res, "Missing username");
-
+  
   if (!req.body.password) return invalidInput(res, "Missing password");
-
-  // Define a new user
+  
+  // Define a new user and set the username & password
   const user = new User();
 
   try {
@@ -151,7 +149,6 @@ app.post("/api/create-user", accountCreationLimiter, async (req, res) => {
 
 // Handle logging out. This is redirected to from the logout button on the GameContent page
 app.get("/logout", (req, res) => {
-  console.log('logout')
   req.session.user_id = undefined;
   req.session.user_sid = undefined;
   res.redirect('/');

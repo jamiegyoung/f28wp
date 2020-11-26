@@ -20,9 +20,10 @@ const GameKeyboardRow = ({ row, index }) => {
           style={{
             transition: "all .1s ease-out",
             color: "#cccc",
-            fontSize: "18px",
+            fontSize: "20px",
             margin: "0px 2px 0px 0px",
-            height: "80px",
+            height: "70px",
+            lineHeight: '19px'
           }}
           key={x}
           id={`key-${x}`}

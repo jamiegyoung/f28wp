@@ -52,31 +52,31 @@ class Game {
         this.uniquePlayers.splice(uniqueIndex, 1);
       }
     }
-    // const index = this.uniquePlayers.indexOf(player.id);
-    // console.log(index);
-    // if (index > -1) {
-    //   this.uniquePlayers.splice(index, 1);
-    //   this.removePlayer(player);
-    // }
   }
 
   static generateDamageWords() {
     return randomWords({ min: 18, max: 20 });
   }
 
+  async sendPlayerInfo(player, socket) {
+    socket.emit("playerInfo", {
+      level: await player.getLevel()
+    });
+  }
+
   startGameLoop() {
     setInterval(() => {
       if (this.boss.dead) {
-        this.players.forEach(async (player) => {
-          await player.addExperience(this.boss.experienceGiven);
+        this.uniquePlayers.forEach(async (player) => {
+          await player.addExperience(this.boss.experienceGiven * 10);
         });
         this.boss = new Boss();
       }
 
       if (!this.boss.dead) {
         this.boss.resetHealth();
-        this.players.forEach(async (player) => {
-          await player.addExperience(this.boss.experienceGiven / 10);
+        this.uniquePlayers.forEach(async (player) => {
+          await player.addExperience(this.boss.experienceGiven);
         });
       }
 
@@ -84,6 +84,8 @@ class Game {
       this.sockets.forEach((socket) => {
         this.sendGameInfo(socket);
         socket.emit("sentence", this.wordList);
+        const player = new Player(socket.request.session.user_id);
+        this.sendPlayerInfo(player, socket)
       });
     }, 20000);
   }
@@ -99,6 +101,9 @@ class Game {
       this.sendGameInfo(socket);
       const player = new Player(userId);
       this.sendPlayerInfo(player, socket)
+      // const userInfoLoop = setInterval(() => {
+      //   this.sendPlayerInfo(player, socket)
+      // }, 5000);
 
       socket.on("message", async (data) => {
         if (this.wordList && this.wordList.includes(data)) {
@@ -118,6 +123,7 @@ class Game {
       }, 2500);
 
       socket.on("disconnect", () => {
+        // clearInterval(userInfoLoop)
         clearInterval(gameInfoInterval);
         console.log("user disconnected");
         player.addExperience(100);
@@ -127,17 +133,13 @@ class Game {
       });
 
       this.addPlayer(player);
-      console.log("adding player");
+      console.log("user connected");
       if (this.uniquePlayers.find((x) => x.id == userId)) return;
       this.addUniquePlayer(player);
     });
   }
 
-  async sendPlayerInfo(player, socket) {
-    socket.emit("playerInfo", {
-      level: await player.getLevel()
-    });
-  }
+
 
   sendGameInfo(socket) {
     socket.emit("gameInfo", {
