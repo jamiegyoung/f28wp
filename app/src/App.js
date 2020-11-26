@@ -18,9 +18,8 @@ import Background from './components/Background'
 
 const App = () => {
   const history = useHistory();
-  
-  // This allows for routing the jsx based off the url
-  
+
+  // React Router allows for routing the jsx based off the url
   return (
     <Router history={history}>
       <div id="App">
@@ -51,6 +50,7 @@ const App = () => {
             <NoMatch></NoMatch>
           </Route>
         </Switch>
+        {/* Display the background no matter the switch */}
         <Background></Background>
       </div>
     </Router>

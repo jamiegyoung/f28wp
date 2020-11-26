@@ -10,6 +10,7 @@ import keyUp3 from "./KeyboardMedia/key_up_3.mp3";
 import keyUp4 from "./KeyboardMedia/key_up_4.mp3";
 import keyUp5 from "./KeyboardMedia/key_up_5.mp3";
 
+// load all the sounds into an array
 const keyDowns = [
   new Audio(keyDown1),
   new Audio(keyDown2),
@@ -18,6 +19,7 @@ const keyDowns = [
   new Audio(keyDown5),
 ]
 
+// load all the sounds into an array
 const keyUps = [
   new Audio(keyUp1),
   new Audio(keyUp2),
@@ -30,6 +32,7 @@ const rand = (arr) => {
   return Math.floor(Math.random() * (arr.length - 0) + 0);
 };
 
+// randomly pick one of the sounds in either array
 const getKeyboardSound = (type) => {
   if (type === "down") {
     return keyDowns[rand(keyDowns)]

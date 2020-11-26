@@ -4,6 +4,7 @@ import AccountForm from "./AccountForm/AccountForm";
 import "./AccountScreen.css";
 
 const AccountScreen = ({ registration }) => {
+  // pseudohidden for fading in the account screen
   const [pseudoHidden, setPseudoHidden] = useState(true);
   const isComponentLoaded = useRef(true);
 
@@ -28,7 +29,9 @@ const AccountScreen = ({ registration }) => {
       }}
       className={`account-container ${pseudoHidden ? "hidden" : ""}`}
     >
+      {/* pass registration type to account form */}
       <AccountForm registration={registration}></AccountForm>
+      {/* Depending on the type of registration, change the text and redirect link */}
       {registration ? (
         <Link
           style={{

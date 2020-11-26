@@ -4,6 +4,8 @@ import { useHistory } from 'react-router-dom';
 
 const GoBackButton = () => {
   const history = useHistory();
+
+  // psuedohidden for hiding the button on click
   const [hasStarted, setHasStarted] = useState(false);
   const [pseudoHidden, setPseudoHidden] = useState(false);
   

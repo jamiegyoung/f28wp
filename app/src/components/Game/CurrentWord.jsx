@@ -11,26 +11,33 @@ const CurrentWord = ({ wordTypedCallback, targetWord }) => {
     setCurrentWord,
     wordTypedCallback
   ) => {
+    // if a key is pressed
     return window.addEventListener("keydown", (e) => {
+      // if the key is backspace, it is repeating and the current word length isn't 0
       if (
         e.key === "Backspace" &&
         e.repeat &&
         currentWordRef.current.length !== 0
       ) {
+        // play the audio and remove all the letters from the current word
         setCurrentWord([]);
         new Audio(removeAllLettersAudio).play();
         return;
       }
 
+      // if the key is backspace, remove the last character from current word
       if (e.key === "Backspace")
         setCurrentWord(currentWordRef.current.slice(0, -1));
 
+      // if the key is space or enter, callback for the word being completed
       if (e.key === " " || e.key === "Enter") {
         wordTypedCallback(currentWordRef.current);
       }
 
+      // if the current length of the word is 24 or more, don't allow more characters to be added
       if (currentWordRef.current.length > 23) return;
 
+      // if the key pressed is a key on the keyboard
       if (
         "qwertyuiopasdfghjklzxcvbnm".split("").includes(e.key.toLowerCase())
       ) {
@@ -89,7 +96,9 @@ const CurrentWord = ({ wordTypedCallback, targetWord }) => {
           }}
           className="noselect"
         >
+          {/* if the target word exists */}
           {targetWord
+              // map each letter to a span and if the letter is correct, make it green, else make it red
             ? currentWord.map((letter, index) => (
                 <span
                   style={{
@@ -110,6 +119,7 @@ const CurrentWord = ({ wordTypedCallback, targetWord }) => {
               color: "#565656",
             }}
           >
+            {/* if there are not target words, then set the text to NO WORDS YET */}
             {targetWord ? targetWord.slice(currentWord.length) : "NO WORDS YET"}
           </span>
         </p>

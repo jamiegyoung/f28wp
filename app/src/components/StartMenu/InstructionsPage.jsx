@@ -4,6 +4,7 @@ import "./InstructionsPage.css";
 import GoBackButton from "./GoBackButton/GoBackButton";
 
 const InstructionsPage = () => {
+  // psueodo hidden for opening animation
   const [pseudoHidden, setPseudoHidden] = useState(true);
   const isComponentLoaded = useRef(true);
 

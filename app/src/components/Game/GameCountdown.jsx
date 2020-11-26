@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useEffect } from "react";
 
 const GameCountdown = ({ reset }) => {
+  // set the time as 20 seconds, could be received from the api in the futures
   const [time, _setTime] = useState(20);
 
   const timeRef = useRef(time);
@@ -26,11 +27,13 @@ const GameCountdown = ({ reset }) => {
     }, 1000);
   };
 
+  // if reset is changed, reset the time
   useEffect(() => {
     setTime(20);
   }, [reset]);
 
   useEffect(() => {
+    // start decrementing the timer
     decrementTimer();
     // eslint-disable-next-line
   }, []);

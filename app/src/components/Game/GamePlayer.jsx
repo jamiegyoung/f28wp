@@ -10,6 +10,7 @@ const GamePlayer = ({ isPlayer, collapsed }) => {
         margin: `${isPlayer ? "0px" : "0px 2px"}`,
       }}
     >
+      {/* change the direction of the spite depending on if it is a suer or not */}
       {isPlayer
         ? `o
 ^/

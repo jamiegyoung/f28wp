@@ -2,7 +2,9 @@ import React from "react";
 import { useState } from "react";
 import "./AccountForm.css";
 
+
 const AccountForm = ({ registration }) => {
+  // is same is true if the password confirmation is the same as the passsword
   const [isSame, setIsSame] = useState(false);
 
   const handleConfirmPasswordValue = (e) => {
@@ -52,6 +54,7 @@ const AccountForm = ({ registration }) => {
           <label>Confirm password</label>
           <input
             id="confirm-password-input"
+            // generate classname based on is the same, allowing for different colours if not
             className={`${isSame ? "same" : "not-same"}`}
             onChange={handleConfirmPasswordValue}
             type="password"
@@ -62,7 +65,9 @@ const AccountForm = ({ registration }) => {
       ) : (
         null
       )}
+      {/* if it is not same and the registration form, the button is  disabled */}
       <button className={isSame || !registration ? '' : 'disabled'} disabled={!isSame && registration} type="submit">
+        {/* generate inner text based on registration type */}
         {registration ? "Sign Up" : "Login"}
       </button>
     </form>

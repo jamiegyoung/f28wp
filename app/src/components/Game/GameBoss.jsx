@@ -6,6 +6,9 @@ import GamePlayer from "./GamePlayer";
 import getDeathSound from "./getDeathSound";
 import getLevelUpSound from "./getLevelUpSound";
 
+// Below are all the different sprites the user can get.
+// These are stored client side as they are tiny and are often reused
+// All sprites are credited
 const bossTypes = [
   // Made by Jamie Young
   ` ______
@@ -195,16 +198,19 @@ const GameBoss = ({
   dead,
   level,
 }) => {
+
   const [otherPlayers, setOtherPlayers] = useState([]);
   const [playerLevel, setPlayerLevel] = useState(0);
   const [isDead, setDead] = useState(false);
   const [bossHealth, setBossHealth] = useState();
   const [damaged, setDamaged] = useState(false);
 
+  // if the boss' health changes
   useEffect(() => {
+    // if the new health is less than the old health
     if (bossHealth > health) {
       setDamaged(true);
-      // do damage anim
+      // do damage anim for .2 seconds
       setTimeout(() => {
         setDamaged(false);
       }, 200);
@@ -213,7 +219,9 @@ const GameBoss = ({
     // eslint-disable-next-line
   }, [health]);
 
+  // if the boss dies
   useEffect(() => {
+    // set dead and play sound
     if (dead && !isDead) {
       getDeathSound();
     }
@@ -221,6 +229,7 @@ const GameBoss = ({
     // eslint-disable-next-line
   }, [dead]);
 
+  // if the number of players in the game changes
   useEffect(() => {
     if (isNaN(numPlayers) || numPlayers < 0) return;
     // Clamp the number of players at 500
@@ -228,7 +237,7 @@ const GameBoss = ({
       if (numPlayers > 500) return 500;
       return numPlayers;
     };
-
+    // Generate an array of GamePlayer components
     setOtherPlayers(
       [...Array(getNumPlayers()).keys()].map((x) => (
         <GamePlayer isPlayer={false} key={x}></GamePlayer>
@@ -236,7 +245,9 @@ const GameBoss = ({
     );
   }, [numPlayers]);
 
+  // if the user's level changes
   useEffect(() => {
+    // play the level up sound
     if (level > playerLevel) {
       getLevelUpSound();
       setPlayerLevel(level);
@@ -246,6 +257,7 @@ const GameBoss = ({
 
   return (
     <div>
+      {/* if the boss exists, display it, else display the question mark */}
       {name && health ? (
         <div
           style={{
@@ -260,6 +272,7 @@ const GameBoss = ({
               fontWeight: "normal",
             }}
           >
+            {/* use the name of the boss name prop */}
             {name}
           </h1>
           <GameBossHealthBar
@@ -287,12 +300,15 @@ const GameBoss = ({
                   fontSize: "24px",
                 }}
               >
-                LVL.{playerLevel}
+                {/* display the user's level */}
+                Lv.{playerLevel}
               </p>
+              {/* add the player to the game */}
               <GamePlayer isPlayer={true}></GamePlayer>
             </div>
             <pre style={{ color: "#eeee", fontSize: "18px", margin: "0px" }}>
               {damaged
+              // if the boss is damaged, randomly add spaces to the sprite in order to generate a damaged looking boss
                 ? bossType
                     .split("")
                     .map((x) =>
@@ -314,11 +330,14 @@ const GameBoss = ({
                 paddingLeft: "50px",
               }}
             >
+              {/* display the other players */}
               {otherPlayers}
             </div>
           </div>
         </div>
       ) : (
+        // the below component is the same as the other one, just a different type
+        // this could probably be refactored in the future
         <div
           style={{
             display: "flex",
