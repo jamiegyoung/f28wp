@@ -10,15 +10,10 @@ class Game {
     // As bizarre as it seems, unique players are used for damage calculation and visual aspects,
     // players is used for experience addition as multiple connections need to be handled so
     // xp cannot be duplicated
-    this.uniquePlayers = [];
     this.players = [];
     this.sockets = [];
     this.startGameLoop();
     this.handleGameConnections();
-  }
-
-  addUniquePlayer(player) {
-    this.uniquePlayers.push(player);
   }
 
   addPlayer(player) {
@@ -44,16 +39,6 @@ class Game {
     if (index > -1) {
       this.players.splice(index, 1);
     }
-    // If the player was the last of its own id, remove the unique also
-    const playerStillExists = this.players.find((x) => x.id === player.id);
-    if (!playerStillExists) {
-      const uniqueIndex = this.uniquePlayers.findIndex(
-        (x) => x.id === player.id
-      );
-      if (uniqueIndex > -1) {
-        this.uniquePlayers.splice(uniqueIndex, 1);
-      }
-    }
   }
 
   // generate the words to send to the user
@@ -74,8 +59,8 @@ class Game {
     setInterval(async () => {
       // if the boss is dead
       if (this.boss.dead) {
-        // give all unique players experience
-        this.uniquePlayers.forEach(async (player) => {
+        // give all players experience
+        this.players.forEach(async (player) => {
           await player.addExperience(100);
         });
         // make a new boss as the old one is dead
@@ -109,6 +94,11 @@ class Game {
       // if they don't have a user_sid or id they get ignored
       if (!userSid) return;
       if (!userId) return;
+      if (this.players.find((x) => x.id == userId)) {
+        // notify the user that they are already logged in
+        socket.emit('already-logged-in')
+        return;
+      }
       // push their socket to sockets for interaction in the game lop
       this.sockets.push(socket);
       // send them the current game state
@@ -124,10 +114,9 @@ class Game {
           // calculate the playeers damage and decrement the bosses health
           const damage = await player.getDamage(data.length);
           const damagedCalced =
-            damage / this.uniquePlayers.length +
+            damage / this.players.length +
             damage /
-              (this.uniquePlayers.length *
-                (this.uniquePlayers.length * (damage / 25)));
+              (this.players.length * (this.players.length * (damage / 25)));
           this.boss.decrementHealth(damagedCalced);
           // send the game info after this action
           this.sendGameInfo(socket);
@@ -143,19 +132,16 @@ class Game {
       socket.on("disconnect", () => {
         // stop the game info loop
         clearInterval(gameInfoInterval);
-        console.log("user disconnected");
         // save the player then remove them
         player.savePlayer();
         this.removePlayer(player);
         this.removeSocket(socket);
+        console.log("user disconnected, playercount: " + this.players.length);
       });
 
       // add the player to players
       this.addPlayer(player);
-      console.log("user connected");
-      // if the player is unique then add them to unique players, else don't
-      if (this.uniquePlayers.find((x) => x.id == userId)) return;
-      this.addUniquePlayer(player);
+      console.log("user connected, playercount: " + this.players.length);
     });
   }
 
@@ -167,7 +153,7 @@ class Game {
       maxHealth: this.boss.initialHealth,
       dead: this.boss.dead,
       type: this.boss.type,
-      numOtherPlayers: this.uniquePlayers.length - 1,
+      numOtherPlayers: this.players.length - 1,
     });
   }
 }

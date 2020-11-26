@@ -33,12 +33,15 @@ const GameContent = () => {
   const targetWordsRef = useRef(targetWords);
 
   // the socket that the user is connected to the server with
-  const [socket, setSocket] = useState(null);
+  // const [socket, setSocket] = useState(null);
+  const socket = useRef(null);
   const [wordsCompleted, setWordsCompleted] = useState([]);
 
   // the current information about the game (boss status, etc)
   const [gameInfo, setGameInfo] = useState(null);
   const [playerInfo, setPlayerInfo] = useState(null);
+
+  const [alreadyLoggedIn, setAlreadyLoggedIn] = useState(false);
 
   // custom handler for set target words to also change the reference
   const setTargetWords = (newWords) => {
@@ -72,21 +75,43 @@ const GameContent = () => {
 
   useEffect(() => {
     // if the user has no socket, we do not need to enter this function
-    if (!socket) return;
-    // on client connect, log the fact that it has connected to the server
-    socket.on("connect", () => console.log("connected to server"));
+    if (!socket.current) return;
 
-    // when the socket receives a sentence
-    socket.on("sentence", (data) => {
-      // if there is data, and the data length is more than 7
-      if (data && data.length > 7) {
-        // set the target words as the data received
-        setTargetWords(data);
-      }
+    // if there is a word in the words completed array
+    if (wordsCompleted[wordsCompleted.length - 1]) {
+      // make a hit sound as the user has hit the monster
+      getHitSound();
+      // tell the server the word has been completed
+      socket.current.emit("message", wordsCompleted[wordsCompleted.length - 1]);
+      // remove the word from words completed
+      setWordsCompleted((state) => {
+        state.pop(); // Pop completed words from list.
+        return state;
+      });
+    }
+    // this effect will be triggered on the change of socket or words completed
+  }, [wordsCompleted]);
+
+  // if the target words are changed, reset the index to 0
+  useEffect(() => {
+    setTargetWordIndex(0);
+  }, [targetWords]);
+
+  // set the socket when this component is mounted
+  useEffect(() => {
+    socket.current = io();
+
+    // when the client connects, log the fact that it has connected to the server
+    socket.current.on("connect", () => console.log("connected to server"));
+
+    // when player info is received
+    socket.current.on("playerInfo", (data) => {
+      // set it as the player info
+      setPlayerInfo(data);
     });
 
     // on receiving the game info
-    socket.on("gameInfo", (data) => {
+    socket.current.on("gameInfo", (data) => {
       // set the received data as the game info
       setGameInfo(data);
       // This is expected structure for data:
@@ -98,39 +123,58 @@ const GameContent = () => {
       // numOtherPlayers: this.uniquePlayers.length
     });
 
-    // when player info is received
-    socket.on("playerInfo", (data) => {
-      // set it as the player info
-      setPlayerInfo(data);
+    // if they are already logged in
+    socket.current.on("already-logged-in", () => {
+      setAlreadyLoggedIn(true);
     });
 
-    // if there is a word in the words completed array
-    if (wordsCompleted[wordsCompleted.length - 1]) {
-      // make a hit sound as the user has hit the monster
-      getHitSound();
-      // tell the server the word has been completed
-      socket.emit("message", wordsCompleted[wordsCompleted.length - 1]);
-      // remove the word from words completed
-      setWordsCompleted((state) => {
-        state.pop(); // Pop completed words from list.
-        return state;
-      });
-    }
-    // this effect will be triggered on the change of socket or words completed
-  }, [socket, wordsCompleted]);
+    // when the socket receives a sentence
+    socket.current.on("sentence", (data) => {
+      // if there is data, and the data length is more than 7
+      if (data && data.length > 7) {
+        // set the target words as the data received
+        setTargetWords(data);
+      }
+    });
 
-  // if the target words are changed, reset the index to 0
-  useEffect(() => {
-    setTargetWordIndex(0);
-  }, [targetWords]);
-
-  // set the socket when this component is mounted
-  useEffect(() => {
-    setSocket(io());
+    return () => {
+      console.log("disconnected from server");
+      socket.current.close();
+    };
   }, []);
 
   return (
     <div>
+      {/* Notify the user if they are already logged in */}
+      {alreadyLoggedIn ? (
+        <div
+          style={{
+            width: "100vw",
+            height: "100vh",
+            position: "fixed",
+            backdropFilter: "blur(5px)",
+            zIndex: "1",
+            backgroundColor: "#000000cc",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+            color: "white",
+          }}
+        >
+          <h1>Already Logged In!</h1>
+          <p>Check your tabs</p>
+          <p
+            onClick={() => window.location.reload()}
+            style={{
+              cursor: "pointer",
+              textDecoration: "underline",
+            }}
+          >
+            Click here or refresh to retry connection
+          </p>
+        </div>
+      ) : null}
       <div
         style={{
           display: "flex",
