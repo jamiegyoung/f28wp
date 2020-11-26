@@ -1,0 +1,19 @@
+.instructions-container {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    transition: all .2s ease-out;
+  }
+  
+  .instructions-container p, .instructions-container h1, .instructions-container pre{
+    width: 75vw;
+    max-width: 500px;
+    color: white;
+    text-align: center;
+  }
+  
+  .instructions-container p {
+    font-size: 1.3em;
+  }
