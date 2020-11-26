@@ -14,7 +14,7 @@ class Boss {
   }
 
   generateType() {
-    this.type = Math.floor((Math.random() * 10) + 1)
+    this.type = Math.floor((Math.random() * 11) + 1)
   }
 
   resetHealth() {
@@ -45,6 +45,7 @@ class Boss {
 
   decrementHealth(damage) {
     this.health -= damage;
+    console.log(this.health -= damage);
     if (this.health <= 0) {
       this.dead = true;
       this.health = 0

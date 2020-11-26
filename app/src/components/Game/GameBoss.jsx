@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useEffect } from "react";
 import GameBossHealthBar from "./GameBossHealthBar";
 import GamePlayer from "./GamePlayer";
-import getLevelUpSound from './getLevelUpSound';
+import getLevelUpSound from "./getLevelUpSound";
 
 const bossTypes = [
   // Made by Jamie Young
@@ -167,6 +167,22 @@ __---|_=_|---__
 \\ \\  (      )  / /
  \\ \`-' / \\ \`--' /
   \`._,'   \`._,'`,
+  //  Made by James Roundtree
+  ` /‾‾|‾‾‾‾|‾‾‾‾|‾‾‾\\
+|   |    |    |    |
+|‾‾‾|‾‾‾‾|‾‾‾‾|‾‾‾‾|
+|   |    |    |    |
+|‾‾‾|‾‾‾‾|‾‾‾‾|‾‾‾‾|       ____
+|   |    |    |    |     /     /
+|___|____|____|____|   /      / 
+|   \\    \\    \\    | / \\     /
+|                   \\    ‾‾‾/
+|     ‾‾‾‾\/‾‾‾‾      \\     /
+|     /‾‾‾‾‾‾‾‾\\       ‾‾‾/
+|    |  { () }  |        |
+|     \\________/         /
+|     /        \\        / 
+ \\_____________________/ `,
 ];
 
 const GameBoss = ({
@@ -296,14 +312,14 @@ const GameBoss = ({
                 flexDirection: "column",
                 alignItems: "center",
                 justifyContent: "center",
-                margin: '0px 50px 0px 0px'
+                margin: "0px 50px 0px 0px",
               }}
             >
               <p
                 style={{
                   color: "white",
                   fontSize: "24px",
-                  margin: '0px 0px 5px 0px'
+                  margin: "0px 0px 5px 0px",
                 }}
               >
                 LVL.{playerLevel}

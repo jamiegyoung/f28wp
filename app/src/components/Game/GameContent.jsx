@@ -5,7 +5,6 @@ import GameBackground from "./GameBackground";
 import GameBoss, { bossTypes } from "./GameBoss";
 import GamePlatform from "./GamePlatform";
 import GameKeyboard from "./GameKeyboard";
-import SoundButton from "./SoundButton";
 import CurrentWord from "./CurrentWord";
 import GameCountdown from "./GameCountdown";
 import getHitSound from './getHitSound';
@@ -137,7 +136,6 @@ const GameContent = () => {
         <GameKeyboard></GameKeyboard>
       </div>
       <LogoutButton></LogoutButton>
-      <SoundButton></SoundButton>
     </div>
   );
 };
