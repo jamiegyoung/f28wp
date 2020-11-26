@@ -47,7 +47,7 @@ const UserAlreadyExists = () => {
           >
             here
           </Link>
-          to try again with a different one.
+          {" "}to go back or register.
         </h1>
       </div>
     </div>

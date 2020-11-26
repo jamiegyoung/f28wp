@@ -5,11 +5,14 @@ import Cookies from 'js-cookie'
 const CookieConsent = () => {
   const [pseudoHidden, setPseudoHidden] = useState(true);
   const isComponentLoaded = useRef(true);
+  const cookieOp = Cookies;
 
+  const checkForCookies = () => {
+    if (cookieOp.get() === "banner" ? true : false);
+  } 
   useEffect(() => {
     setTimeout(() => {
       if (!isComponentLoaded) return;
-      Cookies.get();
       setPseudoHidden(false);
     }, 200);
 
@@ -19,7 +22,6 @@ const CookieConsent = () => {
   }, []);
 
   const closeBanner = () => {
-    if (Cookies.get() != "banner") Cookies.set("banner");
     setPseudoHidden(true); //TODO fix this
   }
 
@@ -34,8 +36,8 @@ const CookieConsent = () => {
       }}
     >
       <div style={{
-        position: "center",
-
+        position: "fixed",
+        bottom: "10px",
         width: "100%",
         height: "100px",
         backgroundColor: '#212121',
@@ -52,7 +54,10 @@ const CookieConsent = () => {
           By playing this game, you agree to let us use of cookies. This is only to better your experience.
         </h3>
         <button
-            onClick = {closeBanner}
+            onClick={() => {
+              cookieOp.set("banner");
+              closeBanner();
+            }}
             style = {{
                 backgroundColor: "green",
                 position: "center",

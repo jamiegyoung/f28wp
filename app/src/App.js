@@ -25,7 +25,7 @@ const App = () => {
       <div id="App">
         {/* Only allow a single route to load */}
         <Switch>
-          <Route path="/cokkie">
+          <Route path="/cookie">
             <CookieConsent></CookieConsent>
           </Route>
           <Route path="/" exact>
