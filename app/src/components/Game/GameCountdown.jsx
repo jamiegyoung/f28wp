@@ -32,6 +32,7 @@ const GameCountdown = ({ reset }) => {
 
   useEffect(() => {
     decrementTimer();
+    // eslint-disable-next-line
   }, []);
 
   return (

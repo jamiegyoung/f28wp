@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useEffect } from "react";
 
 // The challenge of creating a responsive ascii ui
-const GameBackground = () => {
+const Background = () => {
   const calcWidth = () => {
     const count = Math.floor(window.innerWidth / 11.2 - 4);
     return count ? count : 1;
@@ -27,7 +27,7 @@ const GameBackground = () => {
   });
 
   return (
-    <div>
+    <div className="noselect">
       {/* Top Border */}
       <div
         style={{
@@ -82,4 +82,4 @@ const GameBackground = () => {
   );
 };
 
-export default GameBackground;
+export default Background;

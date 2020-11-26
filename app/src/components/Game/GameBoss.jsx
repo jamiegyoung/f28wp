@@ -178,7 +178,7 @@ __---|_=_|---__
 |___|____|____|____|   /      / 
 |   \\    \\    \\    | / \\     /
 |                   \\    ‾‾‾/
-|     ‾‾‾‾\/‾‾‾‾      \\     /
+|     ‾‾‾‾\\/‾‾‾‾     \\     /
 |     /‾‾‾‾‾‾‾‾\\       ‾‾‾/
 |    |  { () }  |        |
 |     \\________/         /
@@ -210,6 +210,7 @@ const GameBoss = ({
       }, 200);
     }
     setBossHealth(health);
+    // eslint-disable-next-line
   }, [health]);
 
   useEffect(() => {
@@ -217,6 +218,7 @@ const GameBoss = ({
       getDeathSound();
     }
     setDead(dead);
+    // eslint-disable-next-line
   }, [dead]);
 
   useEffect(() => {
@@ -239,6 +241,7 @@ const GameBoss = ({
       getLevelUpSound();
       setPlayerLevel(level);
     }
+    // eslint-disable-next-line
   }, [level]);
 
   return (

@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, useCallback } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import removeAllLettersAudio from "./KeyboardMedia/RemoveAll.wav";
 
 const CurrentWord = ({ wordTypedCallback, targetWord }) => {
@@ -25,7 +25,7 @@ const CurrentWord = ({ wordTypedCallback, targetWord }) => {
       if (e.key === "Backspace")
         setCurrentWord(currentWordRef.current.slice(0, -1));
 
-      if (e.key === " " || e.key == "Enter") {
+      if (e.key === " " || e.key === "Enter") {
         wordTypedCallback(currentWordRef.current);
       }
 
@@ -51,6 +51,7 @@ const CurrentWord = ({ wordTypedCallback, targetWord }) => {
     setKeyDownListener(
       _setKeyDownListener(currentWordRef, setCurrentWord, wordTypedCallback)
     );
+    // eslint-disable-next-line
   }, []);
 
   useEffect(() => {

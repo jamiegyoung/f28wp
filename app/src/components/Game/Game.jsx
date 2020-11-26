@@ -4,7 +4,7 @@ import SoundButton from "./SoundButton";
 
 const Game = () => {
   return (
-    <div>
+    <div className="noselect">
       <GameContent></GameContent>
       <SoundButton></SoundButton>
     </div>

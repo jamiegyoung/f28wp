@@ -13,8 +13,8 @@ import NoMatch from "./components/NoMatch";
 import AccountScreen from "./components/AccountScreen/AccountScreen";
 import LoginFail from "./LoginFail";
 import UserAlreadyExists from "./UserAlreadyExists";
-import CookieConsent from "./CookieConsent";
 import InstructionsPage from "./components/StartMenu/InstructionsPage";
+import Background from './components/Background'
 
 const App = () => {
   const history = useHistory();
@@ -26,9 +26,6 @@ const App = () => {
       <div id="App">
         {/* Only allow a single route to load */}
         <Switch>
-          <Route path="/cookie">
-            <CookieConsent></CookieConsent>
-          </Route>
           <Route path="/" exact>
             <StartMenu></StartMenu>
           </Route>
@@ -54,6 +51,7 @@ const App = () => {
             <NoMatch></NoMatch>
           </Route>
         </Switch>
+        <Background></Background>
       </div>
     </Router>
   );

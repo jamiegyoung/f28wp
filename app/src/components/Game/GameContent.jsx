@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useIdleTimer } from 'react-idle-timer';
 import io from "socket.io-client";
-import GameBackground from "./GameBackground";
 import GameBoss, { bossTypes } from "./GameBoss";
 import GamePlatform from "./GamePlatform";
 import GameKeyboard from "./GameKeyboard";
@@ -50,7 +49,7 @@ const GameContent = () => {
     if (currentTargetWord && e) {
       const typedWord = e.join("").toUpperCase();
       // Client side checking for if it is the correct word (there will also be server side)
-      if (currentTargetWord.toUpperCase() == typedWord) {
+      if (currentTargetWord.toUpperCase() === typedWord) {
         setTargetWordIndex(targetWordIndexRef.current + 1);
         setWordsCompleted((state) => [...state, typedWord]);
       }
@@ -102,7 +101,6 @@ const GameContent = () => {
 
   return (
     <div>
-      <GameBackground></GameBackground>
       <div
         style={{
           display: "flex",

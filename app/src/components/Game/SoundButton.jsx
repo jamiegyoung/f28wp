@@ -20,15 +20,17 @@ const SoundButton = () => {
       music.play().catch(() => setMuted(!muted));
       return;
     }
-    
+
     music.pause();
+    // eslint-disable-next-line
   }, [muted, music]);
 
   useEffect(() => {
     return () => {
-      music.pause()
-    }
-  })
+      music.pause();
+    };
+    // eslint-disable-next-line
+  }, []);
 
   return (
     <div

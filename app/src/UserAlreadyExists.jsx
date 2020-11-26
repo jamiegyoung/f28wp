@@ -1,21 +1,7 @@
-import React, { useEffect, useState, useRef } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 
 const UserAlreadyExists = () => {
-  const [pseudoHidden, setPseudoHidden] = useState(true);
-  const isComponentLoaded = useRef(true);
-
-  useEffect(() => {
-    setTimeout(() => {
-      if (!isComponentLoaded) return;
-      setPseudoHidden(false);
-    }, 200);
-
-    return () => {
-      isComponentLoaded.current = false;
-    };
-  }, []);
-
   return (
     <div
       style={{
