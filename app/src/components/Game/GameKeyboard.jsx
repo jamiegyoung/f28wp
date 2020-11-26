@@ -11,6 +11,7 @@ const GameKeyboard = () => {
   useEffect(() => {
     // when a key is pressed
     window.addEventListener("keydown", (e) => {
+      e.preventDefault()
       // if the key is repeated (held) just return as it will spam the sound
       if (e.repeat) return;
       // backspace and enter are special cases and therefore need to be handled manually

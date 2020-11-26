@@ -13,6 +13,7 @@ const CurrentWord = ({ wordTypedCallback, targetWord }) => {
   ) => {
     // if a key is pressed
     return window.addEventListener("keydown", (e) => {
+      e.preventDefault()
       // if the key is backspace, it is repeating and the current word length isn't 0
       if (
         e.key === "Backspace" &&
