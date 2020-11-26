@@ -5,10 +5,7 @@ import { useState } from 'react';
 const GamePlatform = () => {
   const calcWidth = () => {
     const count = Math.floor(window.innerWidth / 22);
-    if (count < 20) {
-      return 20
-    }
-    if (count > 60) {
+    if (count < 60) {
       return 60
     }
     return count;

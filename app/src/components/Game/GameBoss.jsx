@@ -1,5 +1,8 @@
 import React from "react";
+import { useState } from "react";
+import { useEffect } from "react";
 import GameBossHealthBar from "./GameBossHealthBar";
+import GamePlayer from "./GamePlayer";
 
 const bossTypes = [
   // Made by Jamie Young
@@ -165,7 +168,33 @@ __---|_=_|---__
   \`._,'   \`._,'`,
 ];
 
-const GameBoss = ({ bossType, name, health, maxHealth }) => {
+const GameBoss = ({ bossType, name, health, maxHealth, numPlayers, dead }) => {
+  const [otherPlayers, setOtherPlayers] = useState([]);
+
+  useEffect(() => {
+    if (isNaN(numPlayers) || numPlayers < 0) return;
+    // Clamp the number of players at 500
+    const getNumPlayers = () => {
+      if (numPlayers > 500) return 500;
+      return numPlayers;
+    }
+
+    setOtherPlayers(
+      [...Array(getNumPlayers()).keys()].map((x) => (
+        <GamePlayer
+          isPlayer={false}
+          key={x}
+        ></GamePlayer>
+      ))
+    );
+  }, [numPlayers]);
+
+  useEffect(() => {
+    if (dead) {
+      
+    }
+  })
+
   return (
     <div>
       {name && health ? (
@@ -188,9 +217,20 @@ const GameBoss = ({ bossType, name, health, maxHealth }) => {
             max={maxHealth}
             current={health}
           ></GameBossHealthBar>
-          <pre style={{ color: "#eeee", fontSize: "18px", margin: "0px" }}>
-            {bossType}
-          </pre>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              alignItems: "flex-end",
+            }}
+          >
+            <p></p>
+            <GamePlayer isPlayer={true}></GamePlayer>
+            <pre style={{ color: "#eeee", fontSize: "18px", margin: "0px" }}>
+              {bossType}
+            </pre>
+            {otherPlayers}
+          </div>
         </div>
       ) : (
         <div
@@ -206,12 +246,30 @@ const GameBoss = ({ bossType, name, health, maxHealth }) => {
               fontWeight: "normal",
             }}
           >
-            Loading...
+            Waiting...
           </h1>
           <GameBossHealthBar></GameBossHealthBar>
-          <pre style={{ color: "#eeee", fontSize: "18px", margin: "0px" }}>
-            {bossTypes[0]}
-          </pre>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              alignItems: "flex-end",
+            }}
+          >
+            <GamePlayer isPlayer={true}></GamePlayer>
+            <pre style={{ color: "#eeee", fontSize: "18px", margin: "0px" }}>
+              {bossTypes[0]}
+            </pre>
+            <div style={{
+              width: '400px',
+              overflowX: 'visible',
+              display: 'flex',
+              flexWrap: 'nowrap'
+            }}>
+            {otherPlayers}
+
+            </div>
+          </div>
         </div>
       )}
     </div>

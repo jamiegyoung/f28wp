@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
+import { useIdleTimer } from 'react-idle-timer';
 import io from "socket.io-client";
 import GameBackground from "./GameBackground";
 import GameBoss, { bossTypes } from "./GameBoss";
@@ -13,13 +14,24 @@ const GameContent = () => {
   const [targetWordIndex, _setTargetWordIndex] = useState(0);
   const targetWordIndexRef = useRef(targetWordIndex);
 
+  const handleOnIdle = () => {
+    // logout the user after 2 minutes
+    window.location.replace('/logout')
+  }
+
+  useIdleTimer({
+    timeout: 1000 * 60 * 2,
+    onIdle: handleOnIdle,
+    debounce: 500
+  })
+
   const [targetWords, _setTargetWords] = useState([]);
   const targetWordsRef = useRef(targetWords);
 
   const [socket, setSocket] = useState(null);
   const [wordsCompleted, setWordsCompleted] = useState([]);
 
-  const [bossInfo, setBossInfo] = useState(null);
+  const [gameInfo, setGameInfo] = useState(null);
 
   const setTargetWords = (newWords) => {
     targetWordsRef.current = newWords;
@@ -39,8 +51,6 @@ const GameContent = () => {
       // Client side checking for if it is the correct word (there will also be server side)
       if (currentTargetWord.toUpperCase() == typedWord) {
         setTargetWordIndex(targetWordIndexRef.current + 1);
-        // console.log(typedWord);
-        // const socket = io("http://localhost:30284");
         setWordsCompleted((state) => [...state, typedWord]);
       }
     }
@@ -56,13 +66,16 @@ const GameContent = () => {
     });
 
     socket.on("gameInfo", (data) => {
-      setBossInfo(data);
-      // data.name
-      // data.health
-      // data.experienceWorth
-      // data dead
-      console.log(data);
+      setGameInfo(data);
+      // name: this.boss.name,
+      // health: this.boss.health,
+      // maxHealth: this.boss.initialHealth,
+      // experienceWorth: this.boss.experienceGiven,
+      // dead: this.boss.dead,
+      // type: this.boss.type,
+      // numOtherPlayers: this.uniquePlayers.length
     });
+
 
     getHitSound();
     socket.emit("message", wordsCompleted[wordsCompleted.length - 1]);
@@ -95,14 +108,16 @@ const GameContent = () => {
       >
         <GameBoss
           bossType={
-            bossInfo
-              ? bossTypes[bossInfo.type]
-              : bossTypes[Math.floor(Math.random() * bossTypes.length - 1)]
+            gameInfo
+              ? bossTypes[gameInfo.type]
+              : bossTypes[Math.floor(Math.random() * bossTypes.length)]
           }
-          name={bossInfo ? bossInfo.name : ""}
-          health={bossInfo ? bossInfo.health : 25}
-          maxHealth={bossInfo ? bossInfo.maxHealth : 25}
-          dead={bossInfo ? bossInfo.dead : false}
+          name={gameInfo ? gameInfo.name : ""}
+          health={gameInfo ? gameInfo.health : 25}
+          maxHealth={gameInfo ? gameInfo.maxHealth : 25}
+          dead={gameInfo ? gameInfo.dead : false}
+          numPlayers={gameInfo ? gameInfo.numOtherPlayers : 0}
+          // numPlayers={1000}
         ></GameBoss>
         <GamePlatform></GamePlatform>
         <GameCountdown reset={targetWords}></GameCountdown>

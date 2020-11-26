@@ -1,5 +1,7 @@
 #App {
   background-color: #121212;
+  overflow: hidden;
+  /* width: 100vw; */
 }
 
 .hidden {

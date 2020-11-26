@@ -26,7 +26,9 @@ class Game {
   }
 
   removeSocket(socket) {
-    const index = this.sockets.findIndex(x => x.request.session.user_id == socket.request.session.user_id)
+    const index = this.sockets.findIndex(
+      (x) => x.request.session.user_id == socket.request.session.user_id
+    );
     if (index > -1) {
       this.sockets.splice(index, 1);
     }
@@ -73,6 +75,9 @@ class Game {
 
       if (!this.boss.dead) {
         this.boss.resetHealth();
+        this.players.forEach(async (player) => {
+          await player.addExperience(this.boss.experienceGiven / 10);
+        });
       }
 
       this.wordList = Game.generateDamageWords().map((x) => x.toUpperCase());
@@ -92,6 +97,7 @@ class Game {
       if (!userId) return;
       this.sockets.push(socket);
       this.sendGameInfo(socket);
+      this.sendPlayerInfo(player, socket)
       const player = new Player(userId);
 
       socket.on("message", async (data) => {
@@ -127,6 +133,12 @@ class Game {
     });
   }
 
+  async sendPlayerInfo(player, socket) {
+    socket.emit("playerInfo", {
+      level: await player.getLevel()
+    });
+  }
+
   sendGameInfo(socket) {
     socket.emit("gameInfo", {
       name: this.boss.name,
@@ -135,6 +147,7 @@ class Game {
       experienceWorth: this.boss.experienceGiven,
       dead: this.boss.dead,
       type: this.boss.type,
+      numOtherPlayers: this.uniquePlayers.length - 1
     });
   }
 }

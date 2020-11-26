@@ -8,6 +8,7 @@ const SoundButton = () => {
 
   useEffect(() => {
     // TODO: uncomment on launch
+    music.loop = true;
     if (!muted) {
       music.volume = ".25";
       music.play()

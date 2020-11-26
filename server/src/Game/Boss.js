@@ -14,7 +14,7 @@ class Boss {
   }
 
   generateType() {
-    this.type = Math.floor(Math.random() * (10 - 1) + 1)
+    this.type = Math.floor((Math.random() * 10) + 1)
   }
 
   resetHealth() {
