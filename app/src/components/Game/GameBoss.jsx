@@ -177,23 +177,19 @@ const GameBoss = ({ bossType, name, health, maxHealth, numPlayers, dead }) => {
     const getNumPlayers = () => {
       if (numPlayers > 500) return 500;
       return numPlayers;
-    }
+    };
 
     setOtherPlayers(
       [...Array(getNumPlayers()).keys()].map((x) => (
-        <GamePlayer
-          isPlayer={false}
-          key={x}
-        ></GamePlayer>
+        <GamePlayer isPlayer={false} key={x}></GamePlayer>
       ))
     );
   }, [numPlayers]);
 
   useEffect(() => {
     if (dead) {
-      
     }
-  })
+  });
 
   return (
     <div>
@@ -224,12 +220,21 @@ const GameBoss = ({ bossType, name, health, maxHealth, numPlayers, dead }) => {
               alignItems: "flex-end",
             }}
           >
-            <p></p>
             <GamePlayer isPlayer={true}></GamePlayer>
             <pre style={{ color: "#eeee", fontSize: "18px", margin: "0px" }}>
               {bossType}
             </pre>
-            {otherPlayers}
+            <div
+              style={{
+                maxWidth: "400px",
+                overflowX: "visible",
+                display: "flex",
+                flexWrap: "nowrap",
+                paddingLeft: '50px',
+              }}
+            >
+              {otherPlayers}
+            </div>
           </div>
         </div>
       ) : (
@@ -260,14 +265,16 @@ const GameBoss = ({ bossType, name, health, maxHealth, numPlayers, dead }) => {
             <pre style={{ color: "#eeee", fontSize: "18px", margin: "0px" }}>
               {bossTypes[0]}
             </pre>
-            <div style={{
-              width: '400px',
-              overflowX: 'visible',
-              display: 'flex',
-              flexWrap: 'nowrap'
-            }}>
-            {otherPlayers}
-
+            <div
+              style={{
+                maxWidth: "400px",
+                overflowX: "visible",
+                display: "flex",
+                flexWrap: "nowrap",
+                paddingLeft: '50px',
+              }}
+            >
+              {otherPlayers}
             </div>
           </div>
         </div>

@@ -97,8 +97,8 @@ class Game {
       if (!userId) return;
       this.sockets.push(socket);
       this.sendGameInfo(socket);
-      this.sendPlayerInfo(player, socket)
       const player = new Player(userId);
+      this.sendPlayerInfo(player, socket)
 
       socket.on("message", async (data) => {
         if (this.wordList && this.wordList.includes(data)) {
