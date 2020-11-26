@@ -8,18 +8,16 @@ const SoundButton = () => {
   const [music] = useState(new Audio(gameMusic));
   const cookieOp = Cookies;
 
-  
-
   useEffect(() => {
 
     // Check if a cookie called banner exists.
     
-    const checkforCookies = () => {
-      if (cookieOp.get() === 'banner' ? true : false);
+    const checkForCookies = () => {
+      if (cookieOp.get() === "musicmuted" ? true : false);
     } 
 
     // If a cookie does not exist and the it is currently muted, play music.
-    if (!muted && !checkforCookies()) {
+    if (!muted && !checkForCookies()) {
       music.volume = ".25";
       music.play()
         .catch(() => setMuted(!muted))
@@ -65,7 +63,7 @@ const SoundButton = () => {
           cursor: "pointer",
         }}
         onClick={() => {
-          cookieOp.set('banner');
+          cookieOp.set("musicmuted");
           setMuted(!muted);
         }}
       >
