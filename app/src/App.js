@@ -14,6 +14,7 @@ import AccountScreen from "./components/AccountScreen/AccountScreen";
 import LoginFail from "./LoginFail";
 import UserAlreadyExists from "./UserAlreadyExists";
 import CookieConsent from "./CookieConsent";
+import InstructionsPage from "./components/StartMenu/InstructionsPage";
 
 const App = () => {
   const history = useHistory();
@@ -30,6 +31,9 @@ const App = () => {
           </Route>
           <Route path="/" exact>
             <StartMenu></StartMenu>
+          </Route>
+          <Route path="/help">
+            <InstructionsPage></InstructionsPage>
           </Route>
           <Route path="/login">
             <AccountScreen></AccountScreen>
