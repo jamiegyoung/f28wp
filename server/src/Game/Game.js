@@ -68,6 +68,10 @@ class Game {
       }
 
       if (!this.boss.dead) {
+        if (this.players.length > 0 && this.boss.initialHealth > 1) {
+          this.boss.initialHealth = this.boss.initialHealth - 25;
+          console.log("new boss, hp: " + this.boss.health);
+        }
         this.boss.resetHealth();
       }
 
