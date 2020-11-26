@@ -1,5 +1,6 @@
 import React from "react";
 import GameContent from "./GameContent";
+import LogoutButton from "./LogoutButton";
 
 const Game = () => {
   return (

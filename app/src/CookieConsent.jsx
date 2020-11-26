@@ -34,8 +34,9 @@ const CookieConsent = () => {
       }}
     >
       <div style={{
-        position: "center",
-
+        position: "fixed",
+        bottom: "10px",
+        left: "10px",
         width: "100%",
         height: "100px",
         backgroundColor: '#212121',

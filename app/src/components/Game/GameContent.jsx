@@ -8,6 +8,7 @@ import SoundButton from "./SoundButton";
 import CurrentWord from "./CurrentWord";
 import GameCountdown from "./GameCountdown";
 import getHitSound from './getHitSound';
+import LogoutButton from "./LogoutButton";
 
 const GameContent = () => {
   const [targetWordIndex, _setTargetWordIndex] = useState(0);
@@ -113,6 +114,7 @@ const GameContent = () => {
         <GameKeyboard></GameKeyboard>
       </div>
       <SoundButton></SoundButton>
+      <LogoutButton></LogoutButton>
     </div>
   );
 };

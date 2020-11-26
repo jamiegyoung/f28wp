@@ -95,6 +95,7 @@ const loginUser = async (username, password, req, res) => {
   return handleFailedLogin();
 };
 
+
 app.post("/api/authenticate-user", accountLoginLimiter, async (req, res) => {
   // Inform the user if the username or password or both are missing from the query
 
@@ -136,9 +137,9 @@ app.post("/api/create-user", accountCreationLimiter, async (req, res) => {
     return invalidInput(res, error);
   }
 
-  // Check if the user exists before creating it
+  // Check if the username already exists before creating a new user.
   if (await database.checkUserExists({name: user.getUsername()})) {
-    // If the user exists send a conflict error code with some json explaining why
+    // If the username exists, redirect to UserAlreadyExists page.
     return res.status(409).redirect("/user-exists");
   }
 
@@ -147,6 +148,15 @@ app.post("/api/create-user", accountCreationLimiter, async (req, res) => {
 
   loginUser(req.body.username, req.body.password, req, res);
 });
+
+// Handle logging out. This is redirected to from the logout button on the GameContent page
+app.get("/logout", (req, res) => {
+  console.log('logout')
+  req.session.user_id = undefined;
+  req.session.user_sid = undefined;
+  res.redirect('/');
+  
+})
 
 app.get("/game", (req, res) => {
   if (!sessionChecker(req)) {
