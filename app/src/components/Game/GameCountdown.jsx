@@ -27,7 +27,6 @@ const GameCountdown = ({ reset }) => {
   };
 
   useEffect(() => {
-    console.log(reset);
     setTime(20);
   }, [reset]);
 

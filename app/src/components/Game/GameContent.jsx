@@ -33,6 +33,7 @@ const GameContent = () => {
   const [wordsCompleted, setWordsCompleted] = useState([]);
 
   const [gameInfo, setGameInfo] = useState(null);
+  const [playerInfo, setPlayerInfo] = useState(null);
 
   const setTargetWords = (newWords) => {
     targetWordsRef.current = newWords;
@@ -77,13 +78,19 @@ const GameContent = () => {
       // numOtherPlayers: this.uniquePlayers.length
     });
 
+    socket.on("playerInfo", (data) => {
+      setPlayerInfo(data);
+    })
 
-    getHitSound();
-    socket.emit("message", wordsCompleted[wordsCompleted.length - 1]);
-    setWordsCompleted((state) => {
-      state.pop();
-      return state;
-    });
+    if(wordsCompleted[wordsCompleted.length - 1]) {
+      getHitSound();
+      socket.emit("message", wordsCompleted[wordsCompleted.length - 1]);
+      setWordsCompleted((state) => {
+        state.pop();
+        return state;
+      });
+
+    }
   }, [socket, wordsCompleted]);
 
   useEffect(() => {
@@ -118,6 +125,7 @@ const GameContent = () => {
           maxHealth={gameInfo ? gameInfo.maxHealth : 25}
           dead={gameInfo ? gameInfo.dead : false}
           numPlayers={gameInfo ? gameInfo.numOtherPlayers : 0}
+          level={playerInfo ? playerInfo.level : 0}
           // numPlayers={1000}
         ></GameBoss>
         <GamePlatform></GamePlatform>
@@ -128,8 +136,8 @@ const GameContent = () => {
         ></CurrentWord>
         <GameKeyboard></GameKeyboard>
       </div>
-      <SoundButton></SoundButton>
       <LogoutButton></LogoutButton>
+      <SoundButton></SoundButton>
     </div>
   );
 };

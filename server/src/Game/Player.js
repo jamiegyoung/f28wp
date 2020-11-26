@@ -3,19 +3,14 @@ const db = require('../databaseHandler');
 class Player {
   constructor(id) {
     this.id = id;
-    this.getExperience();
   }
 
   async getExperience() {
-    if (this.experience) return this.experience;
     const player = await db.getPlayer(this.id)
-    console.log('getting db xp');
     if (player && player.experience) {
-      this.experience = player.experience;
-      return this.experience
+      return player.experience
     }
-    this.experience = 0
-    return this.experience;
+    return 0;
   }
 
   async getLevel() {
@@ -31,8 +26,7 @@ class Player {
   }
 
   async addExperience(xp) {
-    this.experience = await this.getExperience() + xp;
-    console.log(this.experience);
+    await db.savePlayer(this.id, (await this.getExperience()) + xp)
   }
 
   async savePlayer() {

@@ -168,8 +168,17 @@ __---|_=_|---__
   \`._,'   \`._,'`,
 ];
 
-const GameBoss = ({ bossType, name, health, maxHealth, numPlayers, dead }) => {
+const GameBoss = ({
+  bossType,
+  name,
+  health,
+  maxHealth,
+  numPlayers,
+  dead,
+  level,
+}) => {
   const [otherPlayers, setOtherPlayers] = useState([]);
+  const [playerLevel, setPlayerLevel] = useState(0);
 
   useEffect(() => {
     if (isNaN(numPlayers) || numPlayers < 0) return;
@@ -187,9 +196,8 @@ const GameBoss = ({ bossType, name, health, maxHealth, numPlayers, dead }) => {
   }, [numPlayers]);
 
   useEffect(() => {
-    if (dead) {
-    }
-  });
+    setPlayerLevel(level);
+  }, [level]);
 
   return (
     <div>
@@ -220,7 +228,24 @@ const GameBoss = ({ bossType, name, health, maxHealth, numPlayers, dead }) => {
               alignItems: "flex-end",
             }}
           >
-            <GamePlayer isPlayer={true}></GamePlayer>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                alignContent: "center",
+                justifyContent: "center",
+              }}
+            >
+              <p
+                style={{
+                  color: "white",
+                  fontSize: "24px",
+                }}
+              >
+                LVL.{playerLevel}
+              </p>
+              <GamePlayer isPlayer={true}></GamePlayer>
+            </div>
             <pre style={{ color: "#eeee", fontSize: "18px", margin: "0px" }}>
               {bossType}
             </pre>
@@ -230,7 +255,7 @@ const GameBoss = ({ bossType, name, health, maxHealth, numPlayers, dead }) => {
                 overflowX: "visible",
                 display: "flex",
                 flexWrap: "nowrap",
-                paddingLeft: '50px',
+                paddingLeft: "50px",
               }}
             >
               {otherPlayers}
@@ -261,7 +286,26 @@ const GameBoss = ({ bossType, name, health, maxHealth, numPlayers, dead }) => {
               alignItems: "flex-end",
             }}
           >
-            <GamePlayer isPlayer={true}></GamePlayer>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center",
+                margin: '0px 50px 0px 0px'
+              }}
+            >
+              <p
+                style={{
+                  color: "white",
+                  fontSize: "24px",
+                  margin: '0px 0px 5px 0px'
+                }}
+              >
+                LVL.{playerLevel}
+              </p>
+              <GamePlayer isPlayer={true}></GamePlayer>
+            </div>
             <pre style={{ color: "#eeee", fontSize: "18px", margin: "0px" }}>
               {bossTypes[0]}
             </pre>
@@ -271,7 +315,7 @@ const GameBoss = ({ bossType, name, health, maxHealth, numPlayers, dead }) => {
                 overflowX: "visible",
                 display: "flex",
                 flexWrap: "nowrap",
-                paddingLeft: '50px',
+                paddingLeft: "50px",
               }}
             >
               {otherPlayers}
