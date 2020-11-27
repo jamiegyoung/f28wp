@@ -114,19 +114,19 @@ const InstructionsPage = () => {
         hearts above their name). Kill the boss by attacking the boss
         successfully until they have no Hit Points left. Beware though! You only
         have 20 seconds to kill a boss and it will regenerate all of its health
-        if not killed successfully.
+        if it's not killed successfully.
       </p>
       <p>
         Killing bosses gives you Experience, which contributes to leveling your
         account up. The aim of the game is to hit max level, which is 100. Reach
-        level 100 become the champion of titans!.
+        level 100 to become the champion of titans!
       </p>
       <p>
         Beware though! This is no easy feat, and many mortals have died trying
-        so only take up this challenge if you dare.
+        so only take up this challenge if you dare...
       </p>
       <p>
-        Worry not, though! You have friends that will help you along the way! Enjoy!.
+        Worry not though! You have friends that will help you along the way! Enjoy!
       </p>
       <GoBackButton></GoBackButton>
     </div>
