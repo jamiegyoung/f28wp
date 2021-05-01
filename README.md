@@ -1,5 +1,5 @@
 # Type Titans
-> A MMO where you take on a titan with your tapping skills!
+> A Slightly rushed MMO where you take on a titan with your tapping skills!
 
 Live link to the Game: https://f28wp.jamieyoung.tech/
 
