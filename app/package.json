@@ -21,7 +21,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "set NODE_OPTIONS = \"--openssl-legacy-provider\"; react-scripts build",
     "postbuild": "node bin/app-scripts.js",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
