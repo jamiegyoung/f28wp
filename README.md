@@ -1,8 +1,6 @@
 # Type Titans
 > A Slightly rushed MMO where you take on a titan with your tapping skills!
 
-Live link to the Game: https://f28wp.jamieyoung.tech/
-
 ![concept-art](https://i.imgur.com/A7MT8Yf.png)
 _Note: concept art_
 ## Development setup
