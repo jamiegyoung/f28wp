@@ -89,9 +89,9 @@ const handleConfig = () => {
 };
 
 const checkIndexHtml = () => {
-  if (!fs.existsSync(path.resolve("index.html"))) {
+  if (!fs.existsSync(path.resolve("build/index.html"))) {
     spinner.warn(
-      "index.html does not exist, did you potentially forget to `yarn build` the app?"
+      "build/index.html does not exist, did you potentially forget to `yarn build` the app?"
     );
   }
 };

@@ -36,7 +36,7 @@ const sessionMiddleware = session({
   store: new SqliteStore(storeOptions), // use sqlite3 for session storage
   resave: false,
   saveUninitialized: false,
-  secret: config.sessionSecret,
+  secret: process.env.SESSION_SECRET || config.sessionSecret,
   cookie: { maxAge: 7 * 24 * 60 * 60 * 1000 }, // 1 week
 });
 
@@ -181,7 +181,7 @@ app.get("/game", (req, res) => {
     return res.redirect("/");
   }
   // else return the standard file
-  res.sendFile(__dirname + "/index.html");
+  res.sendFile(__dirname + "/build/index.html");
 });
 
 // Serve the react app
@@ -190,7 +190,7 @@ app.get("*", (req, res) => {
   if (sessionChecker(req)) {
     return res.redirect("/game");
   }
-  res.sendFile(__dirname + "/index.html");
+  res.sendFile(__dirname + "/build/index.html");
 });
 
 // TODO refactor

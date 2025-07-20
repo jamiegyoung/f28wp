@@ -1,0 +1,25 @@
+services:
+  server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: f28wp-server
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=production
+      - PORT=8080
+      - SESSION_SECRET=${SESSION_SECRET:-please-set-secure-session-secret-in-env}
+    volumes:
+      - db-data:/app/src
+    ports:
+      - "8080:8080"
+    networks:
+      - f28wp-network
+
+networks:
+  f28wp-network:
+    driver: bridge
+
+volumes:
+  db-data:
+    driver: local
